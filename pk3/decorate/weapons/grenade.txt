@@ -1,0 +1,77 @@
+actor "Pineapple Grenade": TacDMWeapon
+{
+    Weapon.SelectionOrder 2500
+    Weapon.AmmoUse 1
+    Weapon.AmmoUse2 1
+    Weapon.AmmoGive 0
+    Weapon.AmmoType1 "PineappleGrenade"
+    Weapon.AmmoType2 "PineappleGrenade"
+
+    Inventory.PickupMessage "Pineapple grenade"
+    Obituary "%k flushed out %o."
+
+    Weapon.SlotNumber 1
+
+    +NOAUTOFIRE
+    +NOALERT
+
+    States
+    {
+      Spawn:
+        PGRN D -1
+        Loop
+
+      Ready:
+        HDGR A 0 A_JumpIfInventory("PineappleGrenade", 1, 1)
+        goto NoAmmoRdy
+        HDGR A 1 A_WeaponReady
+        loop
+
+      AmmoRdyUp:
+        HDGR A 1 offset(0, 82)
+        HDGR A 1 offset(0, 77)
+        HDGR A 1 offset(0, 72)
+        HDGR A 1 offset(0, 67)
+        HDGR A 1 offset(0, 62)
+        HDGR A 1 offset(0, 57)
+        HDGR A 1 offset(0, 52)
+        HDGR A 1 offset(0, 47)
+        HDGR A 1 offset(0, 42)
+        HDGR A 1 offset(0, 37)
+        goto Ready
+
+      NoAmmoRdy:
+        HDGR A 0 A_JumpIfInventory("PineappleGrenade", 1, "AmmoRdyUp")
+        TNT1 A 1 A_WeaponReady
+        Loop
+
+      Deselect:
+        TNT1 A 0 A_JumpIfInventory("PineappleGrenade", 1, "AmmoDes")
+        TNT1 AAAAAAAAAAAAAAAAAAAA 0 A_Lower
+        TNT1 A 1 A_Lower
+        Loop
+
+      AmmoDes:
+        HDGR A 1 A_Lower
+        Loop
+
+      Select:
+        TNT1 A 0 A_JumpIfInventory("PineappleGrenade", 1, "AmmoSel")
+        TNT1 AAAAAAAAAAAAAAAAAAAA 0 A_Lower
+        TNT1 A 1 A_Raise
+        Loop
+
+      AmmoSel:
+        HDGR A 0
+        HDGR A 1 A_Raise
+        loop
+
+      Fire:
+        HDGR B 3
+        HDGR C 2
+        HDGR D 7
+        HDGR E 2
+        HDGR E 2 offset(-16, 48)
+        Goto Ready
+    }
+}

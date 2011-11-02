@@ -1,0 +1,31 @@
+actor ShotgunnerPack: TacDMPack
+{
+    States
+    {
+      Use:
+        TNT1 A 0 A_GiveInventory("Fist")
+        TNT1 A 0 A_GiveInventory("9mm Pistol")
+        TNT1 A 0 A_GiveInventory("9mmBullet", 36) // gotta stay light
+        TNT1 A 0 A_GiveInventory("Pump-Action Shotgun")
+        TNT1 A 0 A_GiveInventory("Double-Barrel Shotgun")
+        TNT1 A 0 A_GiveInventory("Buckshot", 32)
+        TNT1 A 0 A_GiveInventory("Slug", 16)
+        stop
+    }
+}
+
+actor ShotgunnerPackBot: TacDMPack
+{
+    States
+    {
+      Use:
+        TNT1 A 0 A_GiveInventory("Fist")
+        TNT1 A 0 A_GiveInventory("9mm~Pistol")
+        TNT1 A 0 A_GiveInventory("9mmBullet", 36)
+        TNT1 A 0 A_GiveInventory("Pump-Action Shotgun")
+        TNT1 A 0 A_GiveInventory("Double-Barrel Shotgun")
+        TNT1 A 0 A_GiveInventory("Buckshot", 32)
+        TNT1 A 0 A_GiveInventory("Slug", 16)
+        stop
+    }
+}

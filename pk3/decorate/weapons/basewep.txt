@@ -1,0 +1,4 @@
+actor TacDMWeapon: Weapon
+{
+    Weapon.Kickback 100
+}

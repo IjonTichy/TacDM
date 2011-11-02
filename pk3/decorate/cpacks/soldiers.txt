@@ -1,0 +1,55 @@
+actor SoldierPack: TacDMPack
+{
+    States
+    {
+      Use:
+        TNT1 A 0 A_GiveInventory("Fist")
+        TNT1 A 0 A_GiveInventory("9mm Pistol")
+        TNT1 A 0 A_GiveInventory("9mmBullet", 72)
+        TNT1 A 0 A_GiveInventory("Assault Rifle")
+        TNT1 A 0 A_GiveInventory("AssaultBullet", 180)
+        stop
+    }
+}
+
+actor SoldierPackBot: TacDMPack
+{
+    States
+    {
+      Use:
+        TNT1 A 0 A_GiveInventory("Fist")
+        TNT1 A 0 A_GiveInventory("9mm~Pistol")
+        TNT1 A 0 A_GiveInventory("9mmBullet", 72)
+        TNT1 A 0 A_GiveInventory("Assault~Rifle")
+        TNT1 A 0 A_GiveInventory("AssaultBullet", 180)
+        stop
+    }
+}
+
+actor AutoSoldierPack: TacDMPack
+{
+    States
+    {
+      Use:
+        TNT1 A 0 A_GiveInventory("Fist")
+        TNT1 A 0 A_GiveInventory("9mm Pistol")
+        TNT1 A 0 A_GiveInventory("9mmBullet", 72)
+        TNT1 A 0 A_GiveInventory("Automatic Assault Rifle")
+        TNT1 A 0 A_GiveInventory("AssaultBullet", 180)
+        stop
+    }
+}
+
+actor AutoSoldierPackBot: TacDMPack
+{
+    States
+    {
+      Use:
+        TNT1 A 0 A_GiveInventory("Fist")
+        TNT1 A 0 A_GiveInventory("9mm~Pistol")
+        TNT1 A 0 A_GiveInventory("9mmBullet", 72)
+        TNT1 A 0 A_GiveInventory("Automatic~Assault~Rifle")
+        TNT1 A 0 A_GiveInventory("AssaultBullet", 180)
+        stop
+    }
+}

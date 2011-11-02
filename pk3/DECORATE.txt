@@ -1,0 +1,27 @@
+// Player Definitions
+
+#include "decorate/baseplayer.txt"
+
+// Weapon Definitions
+
+#include "decorate/ammotypes.txt"
+#include "decorate/ammoreplace.txt"
+
+#include "decorate/weapons/basewep.txt"
+
+#include "decorate/weapons/assaultrifle.txt"
+#include "decorate/weapons/autoassaultrifle.txt"
+#include "decorate/weapons/grenade.txt"
+#include "decorate/weapons/pistol.txt"
+#include "decorate/weapons/shotgun.txt"
+#include "decorate/weapons/ssg.txt"
+#include "decorate/weapons/chaingun.txt"
+
+
+// Class Pack Definitions
+
+#include "decorate/cpacks/basepack.txt"
+
+#include "decorate/cpacks/soldiers.txt"
+#include "decorate/cpacks/shotgunner.txt"
+#include "decorate/cpacks/chaingunners.txt"

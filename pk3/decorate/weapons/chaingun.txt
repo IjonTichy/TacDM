@@ -1,0 +1,71 @@
+actor "Heavy Chaingun": TacDMWeapon replaces Minigun
+{
+  Weapon.SelectionOrder 700
+  Weapon.AmmoUse1 1
+  Weapon.AmmoUse2 2
+  Weapon.AmmoGive1 80
+  Weapon.AmmoType1 "AmmoBelt"
+  Weapon.AmmoType2 "AmmoBelt"
+  Inventory.PickupMessage "Chaingun"
+
+  Weapon.SlotNumber 4
+
+  Obituary "%k cut down %o."
+   States
+   {
+    Ready:
+      PKCG A 1 A_WeaponReady
+      Loop
+    Deselect:
+      PKCG A 1 A_Lower
+      Loop
+    Select:
+      PKCG A 1 A_Raise
+      Loop
+    Fire:
+      PKCG A 0 A_PlaySound("tacticaldm/chaingunfire", CHAN_WEAPON)
+      PKCG A 0 A_GunFlash
+      PKCG A 1 A_FireBullets(2, 2, -1, 20, "BulletPuff")
+      PKCG BD 1
+      PKCG A 1 A_Refire
+      PKCG B 2 A_Weaponready
+      PKCG C 3 A_Weaponready
+      PKCG D 4 A_Weaponready
+      Goto Ready
+    AltFire:
+      PKCG A 0 A_PlaySound("tacticaldm/chaingunfire", CHAN_WEAPON)
+      PKCG A 0 A_GunFlash
+      PKCG A 1 A_FireBullets(4, 4, 2, 20, "BulletPuff")
+      PKCG BCDD 1
+      PKCG A 1 A_Refire
+      PKCG B 2 A_Weaponready
+      PKCG C 3 A_Weaponready
+      PKCG D 4 A_Weaponready
+      Goto Ready
+    Flash:
+      TNT1 A 0
+      TNT1 A 0 a_Jump(128,4)
+      CHGF A 2 Bright A_Light2
+      PKCF B 1 Bright A_Light2
+      TNT1 A 2 A_Light2
+      Goto LightDone
+      CHGF A 2 Bright A_Light1
+      PKCF B 1 Bright A_Light1
+      TNT1 A 2 A_Light1
+      Goto LightDone
+    AltFlash:
+      TNT1 A 0
+      TNT1 A 0 a_Jump(128,4)
+      CHGF A 2 Bright A_Light2
+      PKCF B 1 Bright A_Light2
+      TNT1 A 2 A_Light2
+      Goto LightDone
+      CHGF A 2 Bright A_Light1
+      PKCF B 1 Bright A_Light1
+      TNT1 A 2 A_Light1
+      Goto LightDone
+    Spawn:
+      MGUN A -1
+      Stop
+   }
+}

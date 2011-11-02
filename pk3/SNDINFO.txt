@@ -1,0 +1,14 @@
+tacticaldm/punch                 DSPUNCH
+
+tacticaldm/pistolaltfire         sounds/pistol_altfire.ogg
+
+td/sf1                           sounds/shotgun_fire1.ogg
+td/sf2                           sounds/shotgun_fire2.ogg
+td/sf3                           sounds/shotgun_fire3.ogg
+$random tacticaldm/shotfire      { td/sf1 td/sf2 td/sf3 }
+
+tacticaldm/shotreload            sounds/shotgun_reload.ogg
+tacticaldm/chaingunfire          sounds/chaingun_fire.lmp
+
+
+tacticaldm/assaultriflefire      sounds/assaultrifle_fire.wav

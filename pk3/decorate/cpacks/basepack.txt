@@ -1,0 +1,6 @@
+actor TacDMPack: CustomInventory
+{
+    Inventory.MaxAmount 0
+    +AUTOACTIVATE
+    +ALWAYSPICKUP
+}

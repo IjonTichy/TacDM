@@ -1,0 +1,114 @@
+actor "Automatic Assault Rifle": TacDMWeapon replaces Chaingun
+{
+    Weapon.SelectionOrder 800
+    Weapon.AmmoUse 1
+    Weapon.AmmoUse2 1
+    Weapon.AmmoGive 30
+    Weapon.AmmoType1 "AssaultBullet"
+    Weapon.AmmoType2 "AssaultBullet"
+
+    Inventory.PickupMessage "Automatic assault rifle"
+    Obituary "%k gave %o the consistency of swiss cheese."
+
+    Weapon.SlotNumber 4
+
+    +NOAUTOFIRE
+
+    States
+    {
+      Ready:
+        ASLT A 1 A_WeaponReady
+        Loop
+      Deselect:
+        ASLT A 1 A_Lower
+        Loop
+
+      Select:
+        ASLT A 0 A_JumpIfInventory("IsBot", 1, 1)
+        goto TrueSelect
+        ASLT A 0 A_GiveInventory("Automatic~Assault~Rifle", 1)
+        ASLT A 0 A_TakeInventory("Automatic Assault Rifle", 1)
+        ASLT A 0 A_SelectWeapon("Automatic~Assault~Rifle")
+        stop
+
+      TrueSelect:
+        ASLT A 1 A_Raise
+        Loop
+
+      Fire:
+        ASLT B 0 bright A_FireBullets(4, 4, -1, 10, "BulletPuff")
+        ASLT B 1 bright A_PlaySound("tacticaldm/assaultriflefire", CHAN_WEAPON)
+        ASLT C 1 bright
+        ASLT D 1
+        ASLT A 0 A_ReFire
+        goto Ready
+
+      AltFire:
+        ASLT B 0 bright A_FireBullets(3, 3, -1, 10, "BulletPuff")
+        ASLT B 1 bright A_PlaySound("tacticaldm/assaultriflefire", CHAN_WEAPON)
+        ASLT C 1 bright
+        ASLT B 0 bright A_FireBullets(3, 3, -1, 10, "BulletPuff")
+        ASLT B 1 bright A_PlaySound("tacticaldm/assaultriflefire", CHAN_WEAPON)
+        ASLT C 1 bright
+        ASLT B 0 bright A_FireBullets(3, 3, -1, 10, "BulletPuff")
+        ASLT B 1 bright A_PlaySound("tacticaldm/assaultriflefire", CHAN_WEAPON)
+        ASLT C 2 bright
+        ASLT D 2
+        ASLT A 6
+        Goto Ready
+      Spawn:
+        ASLT Z -1
+        Stop
+    }
+}
+
+actor "Automatic~Assault~Rifle": "Automatic Assault Rifle"
+{
+    -NOAUTOFIRE
+
+    States
+    {
+      Ready:
+        ASLT A 1 A_WeaponReady
+        Loop
+      Deselect:
+        ASLT A 1 A_Lower
+        Loop
+
+      Select:
+        ASLT A 0 A_JumpIfInventory("IsBot", 1, "TrueSelect")
+        ASLT A 0 A_GiveInventory("Automatic Assault Rifle", 1)
+        ASLT A 0 A_TakeInventory("Automatic~Assault~Rifle", 1)
+        ASLT A 0 A_SelectWeapon ("Automatic Assault Rifle")
+        stop
+
+      TrueSelect:
+        ASLT A 1 A_Raise
+        Loop
+
+      Fire:
+        ASLT B 0 bright A_FireBullets(4, 4, -1, 10, "BulletPuff")
+        ASLT B 1 bright A_PlaySound("tacticaldm/assaultriflefire", CHAN_WEAPON)
+        ASLT C 1 bright
+        ASLT D 1
+        ASLT A 0 A_ReFire
+        goto Ready
+
+      AltFire:
+        ASLT B 0 bright A_FireBullets(3, 3, -1, 10, "BulletPuff")
+        ASLT B 1 bright A_PlaySound("tacticaldm/assaultriflefire", CHAN_WEAPON)
+        ASLT C 1 bright
+        ASLT B 0 bright A_FireBullets(3, 3, -1, 10, "BulletPuff")
+        ASLT B 1 bright A_PlaySound("tacticaldm/assaultriflefire", CHAN_WEAPON)
+        ASLT C 1 bright
+        ASLT B 0 bright A_FireBullets(3, 3, -1, 10, "BulletPuff")
+        ASLT B 1 bright A_PlaySound("tacticaldm/assaultriflefire", CHAN_WEAPON)
+        ASLT C 2 bright
+        ASLT D 2
+        ASLT A 8
+        Goto Ready
+      Spawn:
+        ASLT Z -1
+        Stop
+    }
+}
