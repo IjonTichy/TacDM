@@ -40,3 +40,23 @@ actor ShellBoxReplacement: RandomSpawner replaces ShellBox
 {
   dropitem "ShellReplacement"
 }
+
+actor RocketReplacement: CustomInventory replaces RocketAmmo
+{
+  Inventory.PickupMessage "Pack of explosives"
+  States
+  {
+    Spawn:
+      BROK A -1
+      loop
+
+    Pickup:
+      TNT1 A 0 A_GiveInventory("PineappleGrenade", 2)
+      stop
+  }
+}
+
+actor RocketBoxReplacement: RandomSpawner replaces RocketBox
+{
+  dropitem "RocketReplacement"
+}

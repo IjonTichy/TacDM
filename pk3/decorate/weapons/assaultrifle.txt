@@ -10,7 +10,7 @@ actor "Assault Rifle": TacDMWeapon
     Inventory.PickupMessage "Standard-issue assault rifle"
     Obituary "%k gunned down %o."
 
-    Weapon.SlotNumber 4
+    Weapon.SlotNumber 3
 
     +NOAUTOFIRE
 
@@ -41,6 +41,7 @@ actor "Assault Rifle": TacDMWeapon
         ASLT C 2 bright
         ASLT D 2
         Goto Ready
+
       AltFire:
         ASLT B 0 bright A_FireBullets(3, 3, -1, 15, "BulletPuff")
         ASLT B 1 bright A_PlaySound("tacticaldm/assaultriflefire", CHAN_WEAPON)
@@ -90,6 +91,8 @@ actor "Assault~Rifle": "Assault Rifle"
         ASLT C 2 bright
         ASLT D 2
         ASLT A 1
+        ASLT A 1 A_Jump(96, "Ready")
+        ASLT A 2 A_Jump(128, "Ready")
         Goto Ready
       AltFire:
         ASLT B 0 bright A_FireBullets(3, 3, -1, 12, "BulletPuff")
@@ -102,7 +105,10 @@ actor "Assault~Rifle": "Assault Rifle"
         ASLT B 1 bright A_PlaySound("tacticaldm/assaultriflefire", CHAN_WEAPON)
         ASLT C 2 bright
         ASLT D 2
-        ASLT A 7
+        ASLT A 6
+        ASLT A 1
+        ASLT A 3 A_Jump(64, "Ready")
+        ASLT A 3 A_Jump(192, "Ready")
         Goto Ready
       Spawn:
         ASLT Z -1

@@ -8,7 +8,7 @@ actor "Double-Barrel Shotgun": TacDMWeapon replaces SuperShotgun
     Weapon.AmmoType1 "Buckshot"
     Weapon.AmmoType2 "Slug"
 
-    Weapon.SlotNumber 3
+    Weapon.SlotNumber 4
 
     Inventory.PickupMessage "Double-barrel shotgun"
     Obituary "%k splattered %o with a super shotgun."

@@ -8,7 +8,7 @@ actor "Heavy Chaingun": TacDMWeapon replaces Minigun
   Weapon.AmmoType2 "AmmoBelt"
   Inventory.PickupMessage "Chaingun"
 
-  Weapon.SlotNumber 4
+  Weapon.SlotNumber 3
 
   Obituary "%k cut down %o."
    States

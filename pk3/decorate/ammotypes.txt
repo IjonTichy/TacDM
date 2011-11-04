@@ -46,9 +46,9 @@ actor Slug: Ammo
 actor PineappleGrenade: Ammo
 {
   Inventory.Amount 1
-  Inventory.MaxAmount 3
+  Inventory.MaxAmount 4
   Ammo.BackpackAmount 1
-  Ammo.BackpackMaxAmount 5
+  Ammo.BackpackMaxAmount 6
   Inventory.Icon "PGRNA0"
 }
 

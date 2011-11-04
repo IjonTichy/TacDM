@@ -29,7 +29,9 @@ int classDescs[classCount]   = {
 much in the way of benefits. You get an assault rifle, a pistol, some grenades,\n\
 and that's it. You can't even take buildings down, for christ's sake! No one\n\
 would really want to be this guy when the war starts raging, but at the\n\
-beginning, you have to choke the shit down and get over it.",
+beginning, you have to choke the shit down and get over it.\n\
+\n\
+At least it kills infantry well enough.",
 
 "You just came straight from a deathmatch, didn't you. Well, you'll feel right\n\
 at home with this guy - he has both shotguns and you probably won't be running\n\
@@ -50,16 +52,24 @@ a result, its accuracy is much worse compared to its semi-auto brethren. You\n\
 can hold more ammo for it, but it doesn't pack as much as a punch as the\n\
 other's rounds. You do fire faster, though, but is it really enough to\n\
 compensate for it?\n\
-Well, that's your decision. Not mine.",
+Yes, probably, but hey.",
 
 "Hey, chaingun! The hell with respect! You are made of solid meat, and have a\n\
-hefty 130 HP to stay up, although your running capabilities are kinda... bad.\n\
+hefty 140 HP to stay up, although your running capabilities are kinda... bad.\n\
 You won't need to do much running, though, since you have a heavy chaingun that\n\
 can RIP AND TEAR through your enemies pretty effortlessly. Accuracy is only a\n\
 problem at long ranges. Shame about the cost, though."};
 
-int playerClassNums[32];
+global int 5:playerClassNums[];
 int playerTeams[32];
+
+function int isCooperative(void)
+{
+    int ret = (GetCVar("teamplay") == false) && (GetCVar("ctf") == false) &&
+                (GetCVar("deathmatch") == false);
+
+    return ret;
+}
 
 
 // hudmessage(text; HUDMSG_FADEOUT, id, color, (float)x, (float)y, (float)holdTime, (float)fadetime);
@@ -94,28 +104,49 @@ script TACDM_AUTO_OPEN open
         Log(s:"For any server hosts:\nCVars (all preceded by \"tacdm_\": startcash moneyperkill moneylostondeath");
     }
 
-    for (i = 0; i < 5; i++)
+    if (!isCooperative())
     {
-        teamCash[i] += GetCVar("tacdm_startcash");
+        for (i = 0; i < 5; i++)
+        {
+            teamCash[i] += GetCVar("tacdm_startcash");
+        }
     }
 }
 
 script TACDM_AUTO_ENTER enter
 {
+    int pln    = PlayerNumber();
+    int plc    = playerClassNums[pln];
+    int isCoop = isCooperative();
+    int choice = !isCoop || (plc == 0);
+
     ACS_ExecuteAlways(TACDM_AUTO_COMMON, 0, 0,0,0);
-    ACS_ExecuteAlways(TACDM_CHOOSECLASS, 0, 0,0,0);
+
+    if (choice == 1)
+    {
+        ACS_ExecuteAlways(TACDM_CHOOSECLASS, 0, 0,0,0);
+    }
+
     ACS_ExecuteAlways(TACDM_HUD, 0, 0,0,0);
 }
 
 
 script TACDM_AUTO_RESPAWN respawn
 {
+    int pln    = PlayerNumber();
+    int plc    = playerClassNums[pln];
     int bDown = GetPlayerInput(-1, INPUT_BUTTONS);
 
     ACS_ExecuteAlways(TACDM_AUTO_COMMON, 0, 0,0,0);
-    if (bDown & BT_ALTATTACK)
+
+    if ((bDown & BT_ALTATTACK) || (plc == 0))
     {
-        ACS_ExecuteAlways(TACDM_CHOOSECLASS,  0, 0,0,0);
+        ACS_ExecuteAlways(TACDM_CHOOSECLASS,  0, plc,0,0);
+
+        if (plc == 0)   // assume TACDM_AUTO_ENTER wasn't called
+        {
+            ACS_ExecuteAlways(TACDM_HUD, 0, 0,0,0);
+        }
     }
     else
     {
@@ -133,6 +164,11 @@ script TACDM_AUTO_DEATH death
     HUDMSG_FADEOUT | HUDMSG_COLORSTRING,  TACDM_CLASSPRINTOFFSET+1, "Green", 320.4, 460.1, 1.0, 2.0);
 }
 
+script TACDM_AUTO_DISCONNECT (int pln) disconnect
+{
+    playerClassNums[pln] = 0;
+    playerTeams[pln] = -1;
+}
 
 
 
@@ -141,19 +177,19 @@ script TACDM_AUTO_DEATH death
 
 
 
-
-
-script TACDM_CHOOSECLASS (void)
+script TACDM_CHOOSECLASS (int lastClass)
 {
     int i;
     int choseClass;
     int classScrolled;
     int bDown; int bLast; int bOld; int bHeld; int bPressed; int bReleased;
+    int firstGo = 1;
 
     int pln = PlayerNumber();
     int team = GetPlayerInfo(pln, PLAYERINFO_TEAM);
     int flash;
 
+    ClearInventory();
     GiveInventory("SpawnProtection", 1);
 
     if (PlayerIsBot(pln))
@@ -196,7 +232,7 @@ script TACDM_CHOOSECLASS (void)
                 }
             }
 
-            if ((bPressed & BT_ATTACK) || (bPressed & BT_USE))
+            if ((firstGo == 0) && ((bPressed & BT_ATTACK) || (bPressed & BT_USE)))
             {
                 if (classCosts[classScrolled] > teamCash[team])
                 {
@@ -210,12 +246,17 @@ script TACDM_CHOOSECLASS (void)
 
             ACS_ExecuteAlways(TACDM_PRINTCLASSDESC, 0, classScrolled, flash, teamCash[team]);
             Delay(1);
+            firstGo = 0;
         }
     }
 
     playerTeams[pln] = team;
-    playerClassNums[pln] = classScrolled;
-    ACS_ExecuteAlways(TACDM_INTERNAL_CHANGEMONEY, 0, team, -classCosts[classScrolled], 0);
+    playerClassNums[pln] = classScrolled + 1;
+
+    if (classScrolled + 1 != lastClass)
+    {
+        ACS_ExecuteAlways(TACDM_INTERNAL_CHANGEMONEY, 0, team, -classCosts[classScrolled], 0);
+    }
 
     ACS_ExecuteAlways(TACDM_SETUPCLASS,  0, 0,0,0);
 
@@ -227,7 +268,6 @@ script TACDM_CHOOSECLASS (void)
 script TACDM_PRINTCLASSDESC (int whichClass, int flashCost, int moneyAmount) clientside
 {
     int i; int c;
-    int nameSpacing = 10;
 
     SetHudSize(320, 240, 1);
 
@@ -290,12 +330,12 @@ script TACDM_PRINTCLASSDESC (int whichClass, int flashCost, int moneyAmount) cli
             if (classCosts[c] > moneyAmount)
             {
                 HudMessage(s:classNames[c]; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
-                TACDM_CLASSPRINTOFFSET-5-i, "Red", 60.4, 20.1+((i*nameSpacing) << 16), 1.0, 0.5);
+                TACDM_CLASSPRINTOFFSET-5-i, "Red", 60.4, 20.1+((i*TACDM_NAMESPACING) << 16), 1.0, 0.5);
             }
             else
             {
                 HudMessage(s:classNames[c]; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
-                TACDM_CLASSPRINTOFFSET-5-i, "Green", 60.4, 20.1+((i*nameSpacing) << 16), 1.0, 0.5);
+                TACDM_CLASSPRINTOFFSET-5-i, "Green", 60.4, 20.1+((i*TACDM_NAMESPACING) << 16), 1.0, 0.5);
             }
         }
         else
@@ -303,26 +343,24 @@ script TACDM_PRINTCLASSDESC (int whichClass, int flashCost, int moneyAmount) cli
             if (classCosts[c] > moneyAmount)
             {
                 HudMessage(s:classNames[c]; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
-                TACDM_CLASSPRINTOFFSET-5-i, "Dark Red", 60.4, 20.1+((i*nameSpacing) << 16), 1.0, 0.5);
+                TACDM_CLASSPRINTOFFSET-5-i, "Dark Red", 60.4, 20.1+((i*TACDM_NAMESPACING) << 16), 1.0, 0.5);
             }
             else
             {
                 HudMessage(s:classNames[c]; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
-                TACDM_CLASSPRINTOFFSET-5-i, "Dark Green", 60.4, 20.1+((i*nameSpacing) << 16), 1.0, 0.5);
+                TACDM_CLASSPRINTOFFSET-5-i, "Dark Green", 60.4, 20.1+((i*TACDM_NAMESPACING) << 16), 1.0, 0.5);
             }
         }
     }
 }
 
 
-
-
-
 script TACDM_SETUPCLASS (void)
 {
     int pln = PlayerNumber();
-    int classNum = playerClassNums[pln];
+    int classNum = playerClassNums[pln] - 1;
 
+    ClearInventory();
 
     if (PlayerIsBot(pln))
     {

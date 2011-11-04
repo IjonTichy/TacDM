@@ -10,7 +10,7 @@ actor "Automatic Assault Rifle": TacDMWeapon replaces Chaingun
     Inventory.PickupMessage "Automatic assault rifle"
     Obituary "%k gave %o the consistency of swiss cheese."
 
-    Weapon.SlotNumber 4
+    Weapon.SlotNumber 3
 
     +NOAUTOFIRE
 
@@ -55,6 +55,8 @@ actor "Automatic Assault Rifle": TacDMWeapon replaces Chaingun
         ASLT C 2 bright
         ASLT D 2
         ASLT A 6
+        ASLT A 2 A_Jump(64, "Ready")
+        ASLT A 3 A_Jump(192, "Ready")
         Goto Ready
       Spawn:
         ASLT Z -1
