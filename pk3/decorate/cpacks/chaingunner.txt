@@ -3,13 +3,15 @@ actor ChaingunnerPack: TacDMPack
     States
     {
       Use:
-        TNT1 A 0 A_GiveInventory("Fist")
-        TNT1 A 0 A_GiveInventory("Pineapple Grenade")
-        TNT1 A 0 A_GiveInventory("PineappleGrenade", 4)
-        TNT1 A 0 A_GiveInventory("9mm Pistol")
-        TNT1 A 0 A_GiveInventory("9mmBullet", 72)
         TNT1 A 0 A_GiveInventory("Heavy Chaingun")
+        TNT1 A 0 A_GiveInventory("Pineapple Grenade")
+        TNT1 A 0 A_GiveInventory("9mm Pistol")
+        TNT1 A 0 A_GiveInventory("Knuckleduster")
+
+        TNT1 A 0 A_GiveInventory("PineappleGrenade", 4)
+        TNT1 A 0 A_GiveInventory("9mmBullet", 72)
         TNT1 A 0 A_GiveInventory("AmmoBelt", 250)
+        TNT1 A 0 A_GiveInventory("RocketWeakness")
         stop
     }
 }
@@ -19,13 +21,22 @@ actor ChaingunnerPackBot: TacDMPack
     States
     {
       Use:
-        TNT1 A 0 A_GiveInventory("Fist")
-        TNT1 A 0 A_GiveInventory("Pineapple Grenade")
-        TNT1 A 0 A_GiveInventory("PineappleGrenade", 4)
-        TNT1 A 0 A_GiveInventory("9mm~Pistol")
-        TNT1 A 0 A_GiveInventory("9mmBullet", 72)
         TNT1 A 0 A_GiveInventory("Heavy Chaingun")
+        TNT1 A 0 A_GiveInventory("Pineapple Grenade")
+        TNT1 A 0 A_GiveInventory("9mm~Pistol")
+        TNT1 A 0 A_GiveInventory("Knuckleduster")
+
+        TNT1 A 0 A_GiveInventory("PineappleGrenade", 4)
+        TNT1 A 0 A_GiveInventory("9mmBullet", 72)
         TNT1 A 0 A_GiveInventory("AmmoBelt", 250)
+        TNT1 A 0 A_GiveInventory("RocketWeakness")
         stop
     }
+}
+
+actor RocketWeakness: PowerProtection
+{
+    Powerup.Duration 0x7FFFFFFF
+
+    DamageFactor TacDMExplosion, 1.5
 }

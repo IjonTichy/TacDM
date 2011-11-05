@@ -1,0 +1,47 @@
+{
+    name = "T-Fist"
+    class = "Walking Target"
+
+    sprite = "PFIS"
+    crouchsprite = "PFIC"
+}
+
+{
+    name = "T-Pistol"
+    class = "Walking Target"
+
+    sprite = "PPI2"
+    crouchsprite = "PPIC"
+}
+
+{
+    name = "T-Shotgun"
+    class = "Walking Target"
+
+    sprite = "PSG3"
+    crouchsprite = "PSGC"
+}
+
+{
+    name = "T-SSG"
+    class = "Walking Target"
+
+    sprite = "PSSG"
+    crouchsprite = "PS2C"
+}
+
+{
+    name = "T-Chaingun"
+    class = "Walking Target"
+
+    sprite = "PCG4"
+    crouchsprite = "PCGC"
+}
+
+{
+    name = "T-Rocket Launcher"
+    class = "Walking Target"
+
+    sprite = "PRL5"
+    crouchsprite = "PRLC"
+}

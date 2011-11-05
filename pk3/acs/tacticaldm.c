@@ -5,24 +5,24 @@
 #include "tactFunctions.h"
 #include "tactConstants.h"
 
-#define classCount 4
+#define classCount 5
 
 // I'll ignore the 80-char line thing just for this
 
-int classNames[classCount]   = {"Soldier",        "Shotgunner",        "Auto-Soldier",       "Chaingunner"};
-int classImgs[classCount]    = {"SOLDIERD",       "SSGERD",            "SOLDIERD",           "SOLDIERD"};
-int classPacks[classCount]   = {"SoldierPack",    "ShotgunnerPack",    "AutoSoldierPack",    "ChaingunnerPack"};
-int botPacks[classCount]     = {"SoldierPackBot", "ShotgunnerPackBot", "AutoSoldierPackBot", "ChaingunnerPackBot"};
-int classHealths[classCount] = {100,              90,                  100,                  140};
-int classSpeeds[classCount]  = {0.9,              1.0,                 0.85,                 0.6};
-int classJumpZs[classCount]  = {7.0,              8.0,                 7.0,                  6.0};
-int classCosts[classCount]   = {0,                500,                 750,                  3000};
+int classNames[classCount]   = {"Soldier",        "Shotgunner",        "Auto-Soldier",       "Chaingunner",        "Rocketeer"};
+int classImgs[classCount]    = {"SOLDIERD",       "SSGERD",            "SOLDIERD",           "SOLDIERD",           "SSGERD"};
+int classPacks[classCount]   = {"SoldierPack",    "ShotgunnerPack",    "AutoSoldierPack",    "ChaingunnerPack",    "RocketeerPack"};
+int botPacks[classCount]     = {"SoldierPackBot", "ShotgunnerPackBot", "AutoSoldierPackBot", "ChaingunnerPackBot", "RocketeerPackBot"};
+int classHealths[classCount] = {100,              90,                  100,                  140,                  100};
+int classSpeeds[classCount]  = {0.9,              1.0,                 0.85,                 0.6,                  1.0};
+int classJumpZs[classCount]  = {7.0,              8.0,                 7.0,                  6.0,                  8.0};
+int classCosts[classCount]   = {0,                500,                 750,                  3000,                 3000};
 
 
 int teamNames[5] = {"Blue", "Red", "Green", "Gold", "No"};
 
-int teamCash[5];
 int teamNewCash[5][5];
+int teamNewCashReason[5][5];
 
 int classDescs[classCount]   = {
 "Well, at least this is free. Being the grunt of the army, you don't really get\n\
@@ -58,8 +58,21 @@ Yes, probably, but hey.",
 hefty 140 HP to stay up, although your running capabilities are kinda... bad.\n\
 You won't need to do much running, though, since you have a heavy chaingun that\n\
 can RIP AND TEAR through your enemies pretty effortlessly. Accuracy is only a\n\
-problem at long ranges. Shame about the cost, though."};
+problem at long ranges. Shame about the cost, though.\n\
+Oh, and you take explosions harder. That grenade bouncing around the corner?",
 
+"Why settle with killing them? Coming straight from the realm of Quake, you\n\
+have a rocket launcher and you're not afraid to use it. Unfortunately, you lost\n\
+your lightning gun somewhere, and found a pistol on the road, and you had the\n\
+foresight to at least bring a shotgun with you.\n\
+Now you're in this weird land, where there's chainguns that mince people up in\n\
+less than a second, and super shotguns that take more than about a second to \n\
+fire. But your rocket launcher is more powerful, and damages you less!\n\
+\n\
+Yeah, they're pretty much screwed.\n\
+One thing though. Bullets... kinda hurt a helluvalot more. 50% more.",};
+
+global int 4:teamCash[];
 global int 5:playerClassNums[];
 int playerTeams[32];
 
@@ -104,12 +117,21 @@ script TACDM_AUTO_OPEN open
         Log(s:"For any server hosts:\nCVars (all preceded by \"tacdm_\": startcash moneyperkill moneylostondeath");
     }
 
-    if (!isCooperative())
+    for (i = 0; i < 5; i++)
     {
-        for (i = 0; i < 5; i++)
+        if (isCooperative())
         {
-            teamCash[i] += GetCVar("tacdm_startcash");
+            if (teamCash[(i*2)+1] == 1)
+            {
+                continue;
+            }
+            else
+            {
+                teamCash[(i*2)+1] = 1;
+            }
         }
+
+        setTeamCash(i, GetCVar("tacdm_startcash"));
     }
 }
 
@@ -121,6 +143,11 @@ script TACDM_AUTO_ENTER enter
     int choice = !isCoop || (plc == 0);
 
     ACS_ExecuteAlways(TACDM_AUTO_COMMON, 0, 0,0,0);
+
+    if (isCoop)
+    {
+        GiveInventory("ClassSwitcher", 1);
+    }
 
     if (choice == 1)
     {
@@ -166,14 +193,38 @@ script TACDM_AUTO_DEATH death
 
 script TACDM_AUTO_DISCONNECT (int pln) disconnect
 {
+    int team = playerTeams[pln];
+
+    ACS_ExecuteAlways(TACDM_INTERNAL_CHANGEMONEY, 0, team, classCosts[playerClassNums[pln] - 1],  REASON_SOLDCLASS);
+
     playerClassNums[pln] = 0;
     playerTeams[pln] = -1;
+
 }
 
 
 
 
 
+
+script TACDM_ITEM_CLASS (void)
+{
+    int pln = PlayerNumber();
+    int plc = playerClassNums[pln];
+
+    int dx = GetActorVelX(0);
+    int dy = GetActorVelY(0);
+    int dz = GetActorVelZ(0);
+
+    if (dx || dy || dz)
+    {
+        Print(s:"You must be standing still to use this object");
+    }
+    else
+    {
+        ACS_ExecuteAlways(TACDM_CHOOSECLASS, 0, plc);
+    }
+}
 
 
 
@@ -196,7 +247,7 @@ script TACDM_CHOOSECLASS (int lastClass)
     {
         classScrolled = Random(0, classCount-1);
 
-        while (classCosts[classScrolled] > teamCash[team])
+        while (classCosts[classScrolled] > getTeamCash(team))
         {
             classScrolled = Random(0, classCount-1);
         }
@@ -234,7 +285,12 @@ script TACDM_CHOOSECLASS (int lastClass)
 
             if ((firstGo == 0) && ((bPressed & BT_ATTACK) || (bPressed & BT_USE)))
             {
-                if (classCosts[classScrolled] > teamCash[team])
+                if (classScrolled == lastClass - 1)
+                {
+                    break;
+                }
+
+                if (classCosts[classScrolled] > getTeamCash(team))
                 {
                     flash = 1;
                 }
@@ -244,7 +300,7 @@ script TACDM_CHOOSECLASS (int lastClass)
                 }
             }
 
-            ACS_ExecuteAlways(TACDM_PRINTCLASSDESC, 0, classScrolled, flash, teamCash[team]);
+            ACS_ExecuteAlways(TACDM_PRINTCLASSDESC, 0, (lastClass << 16) + classScrolled, flash, getTeamCash(team));
             Delay(1);
             firstGo = 0;
         }
@@ -255,7 +311,12 @@ script TACDM_CHOOSECLASS (int lastClass)
 
     if (classScrolled + 1 != lastClass)
     {
-        ACS_ExecuteAlways(TACDM_INTERNAL_CHANGEMONEY, 0, team, -classCosts[classScrolled], 0);
+        if (lastClass != 0)
+        {
+            ACS_ExecuteAlways(TACDM_INTERNAL_CHANGEMONEY, 0, team, classCosts[lastClass - 1],  REASON_SOLDCLASS);
+        }
+
+        ACS_ExecuteAlways(TACDM_INTERNAL_CHANGEMONEY, 0, team, -classCosts[classScrolled], REASON_BOUGHTCLASS);
     }
 
     ACS_ExecuteAlways(TACDM_SETUPCLASS,  0, 0,0,0);
@@ -268,6 +329,9 @@ script TACDM_CHOOSECLASS (int lastClass)
 script TACDM_PRINTCLASSDESC (int whichClass, int flashCost, int moneyAmount) clientside
 {
     int i; int c;
+
+    int lastClass = whichClass >> 16;
+    whichClass    = whichClass & 65535;
 
     SetHudSize(320, 240, 1);
 
@@ -327,7 +391,12 @@ script TACDM_PRINTCLASSDESC (int whichClass, int flashCost, int moneyAmount) cli
 
         if (i == 2)
         {
-            if (classCosts[c] > moneyAmount)
+            if (c == (lastClass - 1))
+            {
+                HudMessage(s:classNames[c]; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
+                TACDM_CLASSPRINTOFFSET-5-i, "Gold", 60.4, 20.1+((i*TACDM_NAMESPACING) << 16), 1.0, 0.5);
+            }
+            else if (classCosts[c] > moneyAmount)
             {
                 HudMessage(s:classNames[c]; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
                 TACDM_CLASSPRINTOFFSET-5-i, "Red", 60.4, 20.1+((i*TACDM_NAMESPACING) << 16), 1.0, 0.5);
@@ -340,7 +409,12 @@ script TACDM_PRINTCLASSDESC (int whichClass, int flashCost, int moneyAmount) cli
         }
         else
         {
-            if (classCosts[c] > moneyAmount)
+            if (c == (lastClass - 1))
+            {
+                HudMessage(s:classNames[c]; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
+                TACDM_CLASSPRINTOFFSET-5-i, "Yellow", 60.4, 20.1+((i*TACDM_NAMESPACING) << 16), 1.0, 0.5);
+            }
+            else if (classCosts[c] > moneyAmount)
             {
                 HudMessage(s:classNames[c]; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
                 TACDM_CLASSPRINTOFFSET-5-i, "Dark Red", 60.4, 20.1+((i*TACDM_NAMESPACING) << 16), 1.0, 0.5);
@@ -384,28 +458,33 @@ script TACDM_HUD (void)
     int spacing = 10;
     int pln = PlayerNumber();
     int team;
+    int newCash; int reason; int color;
 
     SetHudSize(640, 480, 1);
 
     while (PlayerInGame(pln))
     {
         team = playerTeams[pln];
-        HudMessage(s:teamNames[team], s:" team's Cash: \cd$", d:teamCash[team]; HUDMSG_PLAIN | HUDMSG_COLORSTRING,
+        HudMessage(s:teamNames[team], s:" team's Cash: \cd$", d:getTeamCash(team); HUDMSG_PLAIN | HUDMSG_COLORSTRING,
         TACDM_HUDPRINTOFFSET, teamNames[team], 630.2, 10.1, 1.0);
 
         for (i = 0; i < 5; i++)
         {
-            if (teamNewCash[team][i] > 0)
+            newCash = teamNewCash[team][i];
+            reason  = teamNewCashReason[team][i];
+            color   = reasonColors[reason];
+
+            if (newCash > 0)
             {
                 inc = (i * spacing) << 16;
-                HudMessage(s:"+$", d:teamNewCash[team][i]; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
-                TACDM_HUDPRINTOFFSET+1+i, "Green", 625.2, 25.1+inc, 0.1, 0.25);
+                HudMessage(s:"+$", d:newCash; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
+                TACDM_HUDPRINTOFFSET+1+i, color, 625.2, 25.1+inc, 0.1, 0.25);
             }
-            else  if (teamNewCash[team][i] < 0)
+            else if (newCash < 0)
             {
                 inc = (i * spacing) << 16;
-                HudMessage(s:"-$", d:-teamNewCash[team][i]; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
-                TACDM_HUDPRINTOFFSET+1+i, "Red", 625.2, 25.1+inc, 0.1, 0.25);
+                HudMessage(s:"-$", d:-newCash; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
+                TACDM_HUDPRINTOFFSET+1+i, color, 625.2, 25.1+inc, 0.1, 0.25);
             }
         }
 
@@ -430,11 +509,11 @@ script TACDM_ADDMONEY (int team, int amount, int maxAmount)
         maxAmount = 0x7FFFFFFF;
     }
 
-    addAmount = teamCash[team]+amount;
+    addAmount = getTeamCash(team)+amount;
     addGap    = addAmount - min(addAmount, maxAmount);
     addAmount = amount - addGap;
 
-    ACS_ExecuteAlways(TACDM_INTERNAL_CHANGEMONEY, 0, team, addAmount, 0);
+    ACS_ExecuteAlways(TACDM_INTERNAL_CHANGEMONEY, 0, team, addAmount, REASON_GOTKILL);
 }
 
 
@@ -443,27 +522,24 @@ script TACDM_TAKEMONEY (int team, int amount, int minAmount)
     int emptySlot;
     int takeAmount;
     int takeGap;
+    int ret;
 
     if (amount == 0)
     {
         amount = GetCVar("tacdm_moneylostondeath");
     }
 
-    if (!minAmount)
-    {
-        minAmount = 0;
-    }
-
-    takeAmount = teamCash[team]-amount;
+    takeAmount = getTeamCash(team)-amount;
     takeGap    = max(takeAmount, minAmount) - takeAmount;
-    takeAmount = -(amount - takeGap);
+    ret        = -(amount - takeGap);
 
-    ACS_ExecuteAlways(TACDM_INTERNAL_CHANGEMONEY, 0, team, takeAmount, 0);
+    ACS_ExecuteAlways(TACDM_INTERNAL_CHANGEMONEY, 0, team, ret, REASON_SUICIDE);
 }
 
 
-script TACDM_PAYFORKILL (void)
+script TACDM_PAYFORKILL (int isMonster, int amount)
 {
+    int killedHP = GetActorProperty(0, APROP_SpawnHealth);  // in case monster
     int killedPln = PlayerNumber();
     int killedTeam = playerTeams[killedPln];
 
@@ -472,28 +548,34 @@ script TACDM_PAYFORKILL (void)
     int killerPln = PlayerNumber();
     int killerTeam = playerTeams[killerPln];
 
-    if (killedTeam == killerTeam)
+    if (isMonster)
+    {
+        amount = killedHP / 5;
+        ACS_ExecuteAlways(TACDM_ADDMONEY, 0, killerTeam, amount, 0);
+    }
+    else if (killedTeam == killerTeam)
     {
         if ((killedTeam == 4) && (killedPln != killerPln))
         {
-            ACS_ExecuteAlways(TACDM_ADDMONEY, 0, 4, 0, 0);
+            ACS_ExecuteAlways(TACDM_ADDMONEY, 0, killerTeam, amount, 0);
         }
         else
         {
-            ACS_ExecuteAlways(TACDM_TAKEMONEY, 0, killerTeam, 0, 0);
+            ACS_ExecuteAlways(TACDM_TAKEMONEY, 0, killerTeam, amount, 0);
         }
     }
     else
     {
-        ACS_ExecuteAlways(TACDM_ADDMONEY, 0, killerTeam, 0, 0);
+        ACS_ExecuteAlways(TACDM_ADDMONEY, 0, killerTeam, amount, 0);
     }
 }
 
-script TACDM_INTERNAL_CHANGEMONEY (int team, int amount)
+script TACDM_INTERNAL_CHANGEMONEY (int team, int amount, int reason)
 {
-    int i; int emptySlot;
+    SetActivator(0);
+    int i; int emptySlot = 4;
 
-    teamCash[team] += amount;
+    changeTeamCash(team, amount);
 
     for (i = 0; i < 5; i++)
     {
@@ -505,8 +587,24 @@ script TACDM_INTERNAL_CHANGEMONEY (int team, int amount)
     }
 
     teamNewCash[team][emptySlot] += amount;
+    teamNewCashReason[team][emptySlot] = reason;
 
     Delay(70);
 
     teamNewCash[team][emptySlot] -= amount;
+}
+
+function int getTeamCash(int team)
+{
+    return teamCash[team*2];
+}
+
+function void setTeamCash(int team, int amount)
+{
+    teamCash[team*2] = amount;
+}
+
+function void changeTeamCash(int team, int amount)
+{
+    teamCash[team*2] += amount;
 }

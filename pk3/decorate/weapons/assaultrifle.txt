@@ -7,9 +7,6 @@ actor "Assault Rifle": TacDMWeapon
     Weapon.AmmoType1 "AssaultBullet"
     Weapon.AmmoType2 "AssaultBullet"
 
-    Inventory.PickupMessage "Standard-issue assault rifle"
-    Obituary "%k gunned down %o."
-
     Weapon.SlotNumber 3
 
     +NOAUTOFIRE
@@ -36,20 +33,20 @@ actor "Assault Rifle": TacDMWeapon
         Loop
 
       Fire:
-        ASLT B 0 bright A_FireBullets(1, 1, -1, 15, "BulletPuff")
+        ASLT B 0 bright A_FireBullets(1, 1, -1, 15, "TacDMBulletPuff")
         ASLT B 1 bright A_PlaySound("tacticaldm/assaultriflefire", CHAN_WEAPON)
         ASLT C 2 bright
         ASLT D 2
         Goto Ready
 
       AltFire:
-        ASLT B 0 bright A_FireBullets(3, 3, -1, 15, "BulletPuff")
+        ASLT B 0 bright A_FireBullets(3, 3, -1, 15, "TacDMBulletPuff")
         ASLT B 1 bright A_PlaySound("tacticaldm/assaultriflefire", CHAN_WEAPON)
         ASLT C 1 bright
-        ASLT B 0 bright A_FireBullets(3, 3, -1, 15, "BulletPuff")
+        ASLT B 0 bright A_FireBullets(3, 3, -1, 15, "TacDMBulletPuff")
         ASLT B 1 bright A_PlaySound("tacticaldm/assaultriflefire", CHAN_WEAPON)
         ASLT C 1 bright
-        ASLT B 0 bright A_FireBullets(3, 3, -1, 15, "BulletPuff")
+        ASLT B 0 bright A_FireBullets(3, 3, -1, 15, "TacDMBulletPuff")
         ASLT B 1 bright A_PlaySound("tacticaldm/assaultriflefire", CHAN_WEAPON)
         ASLT C 2 bright
         ASLT D 2
@@ -86,7 +83,7 @@ actor "Assault~Rifle": "Assault Rifle"
         Loop
 
       Fire:
-        ASLT B 0 bright A_FireBullets(1, 1, -1, 12, "BulletPuff")
+        ASLT B 0 bright A_FireBullets(1, 1, -1, 12, "TacDMBulletPuff")
         ASLT B 1 bright A_PlaySound("tacticaldm/assaultriflefire", CHAN_WEAPON)
         ASLT C 2 bright
         ASLT D 2
@@ -95,13 +92,13 @@ actor "Assault~Rifle": "Assault Rifle"
         ASLT A 2 A_Jump(128, "Ready")
         Goto Ready
       AltFire:
-        ASLT B 0 bright A_FireBullets(3, 3, -1, 12, "BulletPuff")
+        ASLT B 0 bright A_FireBullets(3, 3, -1, 12, "TacDMBulletPuff")
         ASLT B 1 bright A_PlaySound("tacticaldm/assaultriflefire", CHAN_WEAPON)
         ASLT C 1 bright
-        ASLT B 0 bright A_FireBullets(3, 3, -1, 12, "BulletPuff")
+        ASLT B 0 bright A_FireBullets(3, 3, -1, 12, "TacDMBulletPuff")
         ASLT B 1 bright A_PlaySound("tacticaldm/assaultriflefire", CHAN_WEAPON)
         ASLT C 1 bright
-        ASLT B 0 bright A_FireBullets(3, 3, -1, 12, "BulletPuff")
+        ASLT B 0 bright A_FireBullets(3, 3, -1, 12, "TacDMBulletPuff")
         ASLT B 1 bright A_PlaySound("tacticaldm/assaultriflefire", CHAN_WEAPON)
         ASLT C 2 bright
         ASLT D 2

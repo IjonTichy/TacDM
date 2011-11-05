@@ -10,6 +10,9 @@ actor "Pump-Action Shotgun": TacDMWeapon replaces Shotgun
 
     Weapon.SlotNumber 3
 
+    DamageType TacDMPhysical
+    Weapon.PreferredSkin "T-Shotgun"
+
     Inventory.PickupMessage "Pump-action shotgun"
     Obituary "%k took down %o like a deer."
     +NOAUTOFIRE
@@ -29,14 +32,14 @@ actor "Pump-Action Shotgun": TacDMWeapon replaces Shotgun
 
       Fire:
         PKSG A 0 A_AlertMonsters
-        PKSG A 0 A_FireBullets(5, 3, 10, 5, "BulletPuff")
+        PKSG A 0 A_FireBullets(5, 3, 10, 5, "TacDMBulletPuff")
         PKSG A 0 A_GunFlash
         PKSG A 7 A_PlaySound("tacticaldm/shotfire", CHAN_WEAPON)
         goto GenericPump
 
         AltFire: // Weaker, but more accurate, slug
         PKSG A 0 A_AlertMonsters
-        PKSG A 0 A_FireBullets(1, 1, 1, 30, "BulletPuff")
+        PKSG A 0 A_FireBullets(1, 1, 1, 30, "TacDMBulletPuff")
         PKSG A 0 A_GunFlash
         PKSG A 11 A_PlaySound("tacticaldm/shotfire", CHAN_WEAPON)
         goto GenericPump

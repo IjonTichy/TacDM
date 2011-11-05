@@ -3,7 +3,6 @@ actor "Pineapple Grenade": TacDMWeapon
     Weapon.SelectionOrder 2500
     Weapon.AmmoUse 1
     Weapon.AmmoUse2 1
-    Weapon.AmmoGive 1
     Weapon.AmmoType1 "PineappleGrenade"
     Weapon.AmmoType2 "PineappleGrenade"
 
@@ -11,6 +10,7 @@ actor "Pineapple Grenade": TacDMWeapon
     Obituary "%k flushed out %o."
 
     Weapon.SlotNumber 6
+    Weapon.PreferredSkin "T-Fist"
 
     +NOAUTOFIRE
     +NOALERT
@@ -120,44 +120,33 @@ actor "Pineapple Grenade": TacDMWeapon
 
 actor ThrownGrenade
 {
-   Radius 5
-   Height 5
-   Speed 30
-   Damage 0
-   Scale 0.3
-   Gravity 0.5
-   SeeSound "tacticaldm/grenadebounce"
+    Radius 5
+    Height 5
+    Speed 30
 
-   Projectile
-   -NOGRAVITY
-   +HEXENBOUNCE
+    Projectile
+    Damage 0
 
-   States
-   {
-   Spawn:
-      HGRN A 0
-      HGRN A 0 A_AlertMonsters
-      HGRN ABCDEFABCDEFABCDEF 4
-      Goto Death
-   Death:
-      HGRN G 0 A_PlaySound("weapons/rocklx")
-      HGRN G 0 A_Explode(224, 224)
-      HGRN G 0 A_SpawnItemEx("GrenadeExplosion")
-      stop
-   }
-}
+    DamageType TacDMExplosion
 
+    -NOGRAVITY
+    +HEXENBOUNCE
 
-actor GrenadeExplosion
-{
-    +NOINTERACTION
-    +CLIENTSIDEONLY
-    RenderStyle Add
+    Scale 0.3
+    Gravity 0.5
+    SeeSound "tacticaldm/grenadebounce"
 
     States
     {
       Spawn:
-        MISL BBBBBBCCCCDD 2 bright
+        HGRN A 0
+        HGRN A 0 A_AlertMonsters
+        HGRN ABCDEFABCDEFABCDEF 4
+        Goto Death
+      Death:
+        HGRN G 0 A_PlaySound("weapons/rocklx")
+        HGRN G 0 A_Explode(224, 224)
+        HGRN G 0 A_SpawnItemEx("TacDMExplosion224")
         stop
     }
 }

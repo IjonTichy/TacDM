@@ -1,0 +1,27 @@
+actor TacDMExplosion
+{
+    +NOINTERACTION
+    +CLIENTSIDEONLY
+    RenderStyle Add
+
+    States
+    {
+      Spawn:
+        MISL B 0 bright
+        MISL B 0 bright A_PlaySound("weapons/rocklx")
+        MISL B 12 bright
+        MISL C 10  bright
+        MISL D 8  bright
+        stop
+    }
+}
+
+actor TacDMExplosion224: TacDMExplosion
+{
+    Scale 1.75
+}
+
+actor TacDMExplosion96: TacDMExplosion
+{
+    Scale 0.75
+}

@@ -7,10 +7,10 @@ actor "Automatic Assault Rifle": TacDMWeapon replaces Chaingun
     Weapon.AmmoType1 "AssaultBullet"
     Weapon.AmmoType2 "AssaultBullet"
 
+    Weapon.SlotNumber 3
+
     Inventory.PickupMessage "Automatic assault rifle"
     Obituary "%k gave %o the consistency of swiss cheese."
-
-    Weapon.SlotNumber 3
 
     +NOAUTOFIRE
 
@@ -36,7 +36,7 @@ actor "Automatic Assault Rifle": TacDMWeapon replaces Chaingun
         Loop
 
       Fire:
-        ASLT B 0 bright A_FireBullets(4, 4, -1, 10, "BulletPuff")
+        ASLT B 0 bright A_FireBullets(4, 4, -1, 10, "TacDMBulletPuff")
         ASLT B 1 bright A_PlaySound("tacticaldm/assaultriflefire", CHAN_WEAPON)
         ASLT C 1 bright
         ASLT D 1
@@ -44,13 +44,13 @@ actor "Automatic Assault Rifle": TacDMWeapon replaces Chaingun
         goto Ready
 
       AltFire:
-        ASLT B 0 bright A_FireBullets(3, 3, -1, 10, "BulletPuff")
+        ASLT B 0 bright A_FireBullets(3, 3, -1, 10, "TacDMBulletPuff")
         ASLT B 1 bright A_PlaySound("tacticaldm/assaultriflefire", CHAN_WEAPON)
         ASLT C 1 bright
-        ASLT B 0 bright A_FireBullets(3, 3, -1, 10, "BulletPuff")
+        ASLT B 0 bright A_FireBullets(3, 3, -1, 10, "TacDMBulletPuff")
         ASLT B 1 bright A_PlaySound("tacticaldm/assaultriflefire", CHAN_WEAPON)
         ASLT C 1 bright
-        ASLT B 0 bright A_FireBullets(3, 3, -1, 10, "BulletPuff")
+        ASLT B 0 bright A_FireBullets(3, 3, -1, 10, "TacDMBulletPuff")
         ASLT B 1 bright A_PlaySound("tacticaldm/assaultriflefire", CHAN_WEAPON)
         ASLT C 2 bright
         ASLT D 2
@@ -89,7 +89,7 @@ actor "Automatic~Assault~Rifle": "Automatic Assault Rifle"
         Loop
 
       Fire:
-        ASLT B 0 bright A_FireBullets(4, 4, -1, 10, "BulletPuff")
+        ASLT B 0 bright A_FireBullets(4, 4, -1, 10, "TacDMBulletPuff")
         ASLT B 1 bright A_PlaySound("tacticaldm/assaultriflefire", CHAN_WEAPON)
         ASLT C 1 bright
         ASLT D 1
@@ -97,13 +97,13 @@ actor "Automatic~Assault~Rifle": "Automatic Assault Rifle"
         goto Ready
 
       AltFire:
-        ASLT B 0 bright A_FireBullets(3, 3, -1, 10, "BulletPuff")
+        ASLT B 0 bright A_FireBullets(3, 3, -1, 10, "TacDMBulletPuff")
         ASLT B 1 bright A_PlaySound("tacticaldm/assaultriflefire", CHAN_WEAPON)
         ASLT C 1 bright
-        ASLT B 0 bright A_FireBullets(3, 3, -1, 10, "BulletPuff")
+        ASLT B 0 bright A_FireBullets(3, 3, -1, 10, "TacDMBulletPuff")
         ASLT B 1 bright A_PlaySound("tacticaldm/assaultriflefire", CHAN_WEAPON)
         ASLT C 1 bright
-        ASLT B 0 bright A_FireBullets(3, 3, -1, 10, "BulletPuff")
+        ASLT B 0 bright A_FireBullets(3, 3, -1, 10, "TacDMBulletPuff")
         ASLT B 1 bright A_PlaySound("tacticaldm/assaultriflefire", CHAN_WEAPON)
         ASLT C 2 bright
         ASLT D 2

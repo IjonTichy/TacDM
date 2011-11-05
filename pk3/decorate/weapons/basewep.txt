@@ -2,3 +2,8 @@ actor TacDMWeapon: Weapon
 {
     Weapon.Kickback 100
 }
+
+actor TacDMBulletPuff: BulletPuff
+{
+    DamageType TacDMPhysical
+}

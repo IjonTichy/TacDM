@@ -1,27 +1,49 @@
-// Player Definitions
+////
+// Player definitions
 
 #include "decorate/baseplayer.txt"
 
-// Weapon Definitions
+
+////
+// Weapon definitions
 
 #include "decorate/ammotypes.txt"
 #include "decorate/ammoreplace.txt"
 
 #include "decorate/weapons/basewep.txt"
 
-#include "decorate/weapons/assaultrifle.txt"
-#include "decorate/weapons/autoassaultrifle.txt"
-#include "decorate/weapons/grenade.txt"
+// Slot 1
+#include "decorate/weapons/fist.txt"
+
+// Slot 2
 #include "decorate/weapons/pistol.txt"
+
+// Slot 3
+#include "decorate/weapons/assaultrifle.txt"
 #include "decorate/weapons/shotgun.txt"
-#include "decorate/weapons/ssg.txt"
+#include "decorate/weapons/autoassaultrifle.txt"
 #include "decorate/weapons/chaingun.txt"
 
+// Slot 4
+#include "decorate/weapons/ssg.txt"
+#include "decorate/weapons/rocketlauncher.txt"
 
-// Class Pack Definitions
+// Slot 6
+#include "decorate/weapons/grenade.txt"
+
+////
+// Class Pack definitions
 
 #include "decorate/cpacks/basepack.txt"
 
 #include "decorate/cpacks/soldiers.txt"
 #include "decorate/cpacks/shotgunner.txt"
-#include "decorate/cpacks/chaingunners.txt"
+#include "decorate/cpacks/chaingunner.txt"
+#include "decorate/cpacks/rocketeer.txt"
+
+
+////
+// Other definitions
+
+#include "decorate/explosions.txt"
+#include "decorate/monsterreplace.txt"

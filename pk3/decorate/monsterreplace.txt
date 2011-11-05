@@ -1,0 +1,366 @@
+actor TacDMZombieman: Zombieman replaces Zombieman
+{
+    States
+    {
+      Death.Massacre:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        TNT1 A 0 A_NoBlocking
+        stop
+
+      Death:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::Death
+
+      XDeath:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::XDeath
+    }
+}
+
+actor TacDMShotgunGuy: ShotgunGuy replaces ShotgunGuy
+{
+    States
+    {
+      Death.Massacre:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        TNT1 A 0 A_NoBlocking
+        stop
+
+      Death:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::Death
+
+      XDeath:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::XDeath
+    }
+}
+
+actor TacDMChaingunGuy: ChaingunGuy replaces ChaingunGuy
+{
+    States
+    {
+      Death.Massacre:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        TNT1 A 0 A_NoBlocking
+        stop
+
+      Death:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::Death
+
+      XDeath:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::XDeath
+    }
+}
+
+actor TacDMSuperShotgunGuy: SuperShotgunGuy replaces SuperShotgunGuy
+{
+    States
+    {
+      Death.Massacre:
+        TNT1 A 0 A_NoBlocking
+        stop
+
+      Death:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::Death
+
+      XDeath:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::XDeath
+    }
+}
+
+actor TacDMDoomImp: DoomImp replaces DoomImp
+{
+    States
+    {
+      Death.Massacre:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        TNT1 A 0 A_NoBlocking
+        stop
+
+      Death:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::Death
+
+      XDeath:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::XDeath
+    }
+}
+
+actor TacDMDarkImp: DarkImp replaces DarkImp
+{
+    States
+    {
+      Death.Massacre:
+        TNT1 A 0 A_NoBlocking
+        stop
+
+      Death:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::Death
+
+      XDeath:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::XDeath
+    }
+}
+
+actor TacDMDemon: Demon replaces Demon
+{
+    States
+    {
+      Death.Massacre:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        TNT1 A 0 A_NoBlocking
+        stop
+
+      Death:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::Death
+    }
+}
+
+actor TacDMBloodDemon: BloodDemon replaces BloodDemon
+{
+    States
+    {
+      Death.Massacre:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        TNT1 A 0 A_NoBlocking
+        stop
+
+      Death:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::Death
+    }
+}
+
+actor TacDMCacodemon: Cacodemon replaces Cacodemon
+{
+    States
+    {
+      Death.Massacre:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        TNT1 A 0 A_NoBlocking
+        stop
+
+      Death:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::Death
+    }
+}
+
+actor TacDMCacolantern: Cacolantern replaces Cacolantern
+{
+    States
+    {
+      Death.Massacre:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        TNT1 A 0 A_NoBlocking
+        stop
+
+      Death:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::Death
+    }
+}
+
+actor TacDMAbaddon: Abaddon replaces Abaddon
+{
+    States
+    {
+      Death.Massacre:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        TNT1 A 0 A_NoBlocking
+        stop
+
+      Death:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::Death
+    }
+}
+
+actor TacDMLostSoul: LostSoul replaces LostSoul
+{
+    States
+    {
+      Death.Massacre:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        TNT1 A 0 A_NoBlocking
+        stop
+
+      Death:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::Death
+    }
+}
+
+actor TacDMPainElemental: PainElemental replaces PainElemental
+{
+    States
+    {
+      Death.Massacre:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        TNT1 A 0 A_NoBlocking
+        stop
+
+      Death:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::Death
+    }
+}
+
+actor TacDMRevenant: Revenant replaces Revenant
+{
+    States
+    {
+      Death.Massacre:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        TNT1 A 0 A_NoBlocking
+        stop
+
+      Death:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::Death
+    }
+}
+
+actor TacDMFatso: Fatso replaces Fatso
+{
+    States
+    {
+      Death.Massacre:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        TNT1 A 0 A_NoBlocking
+        stop
+
+      Death:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::Death
+    }
+}
+
+actor TacDMHectebus: Hectebus replaces Hectebus
+{
+    States
+    {
+      Death.Massacre:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        TNT1 A 0 A_NoBlocking
+        stop
+
+      Death:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::Death
+    }
+}
+
+actor TacDMArachnotron: Arachnotron replaces Arachnotron
+{
+    States
+    {
+      Death.Massacre:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        TNT1 A 0 A_NoBlocking
+        stop
+
+      Death:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::Death
+    }
+}
+
+actor TacDMHellKnight: HellKnight replaces HellKnight
+{
+    States
+    {
+      Death.Massacre:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        TNT1 A 0 A_NoBlocking
+        stop
+
+      Death:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::Death
+    }
+}
+
+actor TacDMBaronOfHell: BaronOfHell replaces BaronOfHell
+{
+    States
+    {
+      Death.Massacre:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        TNT1 A 0 A_NoBlocking
+        stop
+
+      Death:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::Death
+    }
+}
+
+actor TacDMBelphegor: Belphegor replaces Belphegor
+{
+    States
+    {
+      Death.Massacre:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        TNT1 A 0 A_NoBlocking
+        stop
+
+      Death:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::Death
+    }
+}
+
+actor TacDMArchVile: ArchVile replaces ArchVile
+{
+    States
+    {
+      Death.Massacre:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        TNT1 A 0 A_NoBlocking
+        stop
+
+      Death:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::Death
+    }
+}
+
+actor TacDMCyberdemon: Cyberdemon replaces Cyberdemon
+{
+    States
+    {
+      Death.Massacre:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        TNT1 A 0 A_NoBlocking
+        stop
+
+      Death:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::Death
+    }
+}
+
+actor TacDMSpiderMastermind: SpiderMastermind replaces SpiderMastermind
+{
+    States
+    {
+      Death.Massacre:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        TNT1 A 0 A_NoBlocking
+        stop
+
+      Death:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::Death
+    }
+}
