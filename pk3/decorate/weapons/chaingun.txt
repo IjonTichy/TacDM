@@ -1,4 +1,4 @@
-actor "Heavy Chaingun": TacDMWeapon replaces Minigun
+actor "Heavy Chaingun": TacDMWeapon
 {
     Weapon.SelectionOrder 700
     Weapon.AmmoUse1 1

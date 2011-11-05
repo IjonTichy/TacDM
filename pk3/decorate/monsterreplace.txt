@@ -19,6 +19,7 @@ actor TacDMZombieman: Zombieman replaces Zombieman
 
 actor TacDMShotgunGuy: ShotgunGuy replaces ShotgunGuy
 {
+    DropItem "LesserShellPack"
     States
     {
       Death.Massacre:
@@ -38,6 +39,7 @@ actor TacDMShotgunGuy: ShotgunGuy replaces ShotgunGuy
 
 actor TacDMChaingunGuy: ChaingunGuy replaces ChaingunGuy
 {
+    DropItem "ShellReplacement"
     States
     {
       Death.Massacre:

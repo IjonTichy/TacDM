@@ -1,4 +1,4 @@
-actor "Pump-Action Shotgun": TacDMWeapon replaces Shotgun
+actor "Pump-Action Shotgun": TacDMWeapon
 {
     Weapon.SelectionOrder 1300
     Weapon.AmmoUse1 1

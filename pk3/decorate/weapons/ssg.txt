@@ -1,4 +1,4 @@
-actor "Double-Barrel Shotgun": TacDMWeapon replaces SuperShotgun
+actor "Double-Barrel Shotgun": TacDMWeapon
 {
     Weapon.SelectionOrder 100
     Weapon.AmmoUse1 2

@@ -1,4 +1,4 @@
-actor "9mm Pistol": TacDMWeapon replaces Pistol
+actor "9mm Pistol": TacDMWeapon
 {
     Weapon.SelectionOrder 2000
     Weapon.AmmoUse1 1

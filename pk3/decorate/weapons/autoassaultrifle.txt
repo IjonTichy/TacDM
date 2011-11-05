@@ -1,4 +1,4 @@
-actor "Automatic Assault Rifle": TacDMWeapon replaces Chaingun
+actor "Automatic Assault Rifle": TacDMWeapon
 {
     Weapon.SelectionOrder 800
     Weapon.AmmoUse 1

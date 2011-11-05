@@ -1,3 +1,16 @@
+actor NoSpawn
+{
+    +NOINTERACTION
+    +CLIENTSIDEONLY
+
+    States
+    {
+      Spawn:
+        TNT1 A 0
+        stop
+    }
+}
+
 ////
 // Player definitions
 
@@ -7,6 +20,8 @@
 ////
 // Weapon definitions
 
+#include "decorate/noweaponspawn.txt"
+
 #include "decorate/ammotypes.txt"
 #include "decorate/ammoreplace.txt"
 
@@ -15,8 +30,10 @@
 // Slot 1
 #include "decorate/weapons/fist.txt"
 
+
 // Slot 2
 #include "decorate/weapons/pistol.txt"
+
 
 // Slot 3
 #include "decorate/weapons/assaultrifle.txt"
@@ -24,12 +41,16 @@
 #include "decorate/weapons/autoassaultrifle.txt"
 #include "decorate/weapons/chaingun.txt"
 
+
 // Slot 4
 #include "decorate/weapons/ssg.txt"
 #include "decorate/weapons/rocketlauncher.txt"
 
+
 // Slot 6
 #include "decorate/weapons/grenade.txt"
+
+
 
 ////
 // Class Pack definitions

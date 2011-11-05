@@ -21,10 +21,10 @@ actor ChaingunnerPackBot: TacDMPack
     States
     {
       Use:
-        TNT1 A 0 A_GiveInventory("Heavy Chaingun")
-        TNT1 A 0 A_GiveInventory("Pineapple Grenade")
-        TNT1 A 0 A_GiveInventory("9mm~Pistol")
         TNT1 A 0 A_GiveInventory("Knuckleduster")
+        TNT1 A 0 A_GiveInventory("9mm~Pistol")
+        TNT1 A 0 A_GiveInventory("Pineapple Grenade")
+        TNT1 A 0 A_GiveInventory("Heavy Chaingun")
 
         TNT1 A 0 A_GiveInventory("PineappleGrenade", 4)
         TNT1 A 0 A_GiveInventory("9mmBullet", 72)
