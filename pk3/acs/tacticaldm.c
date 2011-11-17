@@ -75,8 +75,8 @@ Oh, and you take explosions harder. That grenade bouncing around the corner?",
 
 "Why settle with killing them? Coming straight from the realm of Quake, you\n\
 have a rocket launcher and you're not afraid to use it. Unfortunately, you lost\n\
-your lightning gun somewhere, and found a pistol on the road, and you had the\n\
-foresight to at least bring a shotgun with you.\n\
+your lightning gun somewhere, and found a pistol on the road. You had the\n\
+foresight to at least bring a shotgun with you, as backup.\n\
 Now you're in this weird land, where there's chainguns that mince people up in\n\
 less than a second, and super shotguns that take more than about a second to \n\
 fire. But your rocket launcher is more powerful, and damages you less!\n\
