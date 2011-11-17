@@ -38,5 +38,6 @@ actor RocketWeakness: PowerProtection
 {
     Powerup.Duration 0x7FFFFFFF
 
+    DamageFactor TacDMMonster,   1.2
     DamageFactor TacDMExplosion, 1.5
 }

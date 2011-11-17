@@ -37,9 +37,9 @@ actor "Pump-Action Shotgun": TacDMWeapon
         PKSG A 7 A_PlaySound("tacticaldm/shotfire", CHAN_WEAPON)
         goto GenericPump
 
-        AltFire: // Weaker, but more accurate, slug
+      AltFire:  // Weaker, more accurate slug
         PKSG A 0 A_AlertMonsters
-        PKSG A 0 A_FireBullets(1, 1, 1, 30, "TacDMBulletPuff")
+        PKSG A 0 A_FireBullets(1, 1, -1, 30, "TacDMBulletPuff")
         PKSG A 0 A_GunFlash
         PKSG A 11 A_PlaySound("tacticaldm/shotfire", CHAN_WEAPON)
         goto GenericPump

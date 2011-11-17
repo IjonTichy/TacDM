@@ -1,7 +1,14 @@
 actor TacDMZombieman: Zombieman replaces Zombieman
 {
+    DropItem "LesserClipPack"
     States
     {
+      Missile:
+        POSS E 10 A_FaceTarget
+        POSS F 8 bright A_CustomBulletAttack(22.5, 0, 1, 3 + random(0,2), "TacDMBulletPuff")
+        POSS E 8
+        Goto See
+
       Death.Massacre:
         TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
         TNT1 A 0 A_NoBlocking
@@ -22,6 +29,12 @@ actor TacDMShotgunGuy: ShotgunGuy replaces ShotgunGuy
     DropItem "LesserShellPack"
     States
     {
+      Missile:
+        SPOS E 10 A_FaceTarget
+        SPOS F 10 bright A_CustomBulletAttack(22.5, 0, 3, 3 + random(0,2), "TacDMBulletPuff")
+        SPOS E 10
+        goto See
+
       Death.Massacre:
         TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
         TNT1 A 0 A_NoBlocking
@@ -39,9 +52,15 @@ actor TacDMShotgunGuy: ShotgunGuy replaces ShotgunGuy
 
 actor TacDMChaingunGuy: ChaingunGuy replaces ChaingunGuy
 {
-    DropItem "ShellReplacement"
+    DropItem "ClipReplacement"
     States
     {
+      Missile:
+        CPOS E 10 A_FaceTarget
+        CPOS FE 4 bright A_CustomBulletAttack(22.5, 0, 1, 3 + random(0,2), "TacDMBulletPuff")
+        CPOS F 1 A_CPosRefire
+        goto Missile+1
+
       Death.Massacre:
         TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
         TNT1 A 0 A_NoBlocking
@@ -59,8 +78,15 @@ actor TacDMChaingunGuy: ChaingunGuy replaces ChaingunGuy
 
 actor TacDMSuperShotgunGuy: SuperShotgunGuy replaces SuperShotgunGuy
 {
+    DropItem "ShellReplacement"
     States
     {
+      Missile:
+        GPOS E 10 A_FaceTarget
+        GPOS F 8 Bright A_CustomBulletAttack(8, 7, 7, 5, "TacDMBulletPuff")
+        GPOS E 8
+        Goto See
+
       Death.Massacre:
         TNT1 A 0 A_NoBlocking
         stop
@@ -73,6 +99,59 @@ actor TacDMSuperShotgunGuy: SuperShotgunGuy replaces SuperShotgunGuy
         TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
         goto Super::XDeath
     }
+}
+
+actor TacDMNazi: WolfensteinSS replaces WolfensteinSS
+{
+    DropItem "LesserClipPack"
+    DropItem "LesserClipPack" 128
+    States
+    {
+      Missile:
+        SSWV EF 10 A_FaceTarget
+        SSWV G 4 bright A_CustomBulletAttack(22.5, 0, 1, 3 + random(0,2), "TacDMBulletPuff")
+        SSWV F 6 A_FaceTarget
+        SSWV G 4 bright A_CustomBulletAttack(22.5, 0, 1, 3 + random(0,2), "TacDMBulletPuff")
+        SSWV F 1 A_CPosRefire
+        goto Missile+1
+
+      Death.Massacre:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        TNT1 A 0 A_NoBlocking
+        stop
+
+      Death:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::Death
+
+      XDeath:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::XDeath
+    }
+}
+
+actor TacDMCommanderKeen: CommanderKeen replaces CommanderKeen
+{
+    States
+    {
+      Death.Massacre:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        TNT1 A 0 A_NoBlocking
+        stop
+
+      Death:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::Death
+
+      XDeath:
+        TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
+        goto Super::XDeath
+    }
+}
+
+actor TacDMDoomImpBall: DoomImpBall replaces DoomImpBall
+{
+    DamageType TacDMExplosion
 }
 
 actor TacDMDoomImp: DoomImp replaces DoomImp
@@ -92,6 +171,11 @@ actor TacDMDoomImp: DoomImp replaces DoomImp
         TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
         goto Super::XDeath
     }
+}
+
+actor TacDMDarkImpBall: DarkImpBall replaces DarkImpBall
+{
+    DamageType TacDMExplosion
 }
 
 actor TacDMDarkImp: DarkImp replaces DarkImp
@@ -127,6 +211,11 @@ actor TacDMDemon: Demon replaces Demon
     }
 }
 
+actor TacDMSpectre: TacDMDemon replaces Spectre
+{
+    RenderStyle Fuzzy
+}
+
 actor TacDMBloodDemon: BloodDemon replaces BloodDemon
 {
     States
@@ -141,6 +230,12 @@ actor TacDMBloodDemon: BloodDemon replaces BloodDemon
         goto Super::Death
     }
 }
+
+actor TacDMCacodemonBall: CacodemonBall replaces CacodemonBall
+{
+    DamageType TacDMExplosion
+}
+
 
 actor TacDMCacodemon: Cacodemon replaces Cacodemon
 {
@@ -157,6 +252,11 @@ actor TacDMCacodemon: Cacodemon replaces Cacodemon
     }
 }
 
+actor TacDMCacolanternBall: CacolanternBall replaces CacolanternBall
+{
+    DamageType TacDMExplosion
+}
+
 actor TacDMCacolantern: Cacolantern replaces Cacolantern
 {
     States
@@ -170,6 +270,11 @@ actor TacDMCacolantern: Cacolantern replaces Cacolantern
         TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
         goto Super::Death
     }
+}
+
+actor TacDMAbaddonBall: AbaddonBall replaces AbaddonBall
+{
+    DamageType TacDMExplosion
 }
 
 actor TacDMAbaddon: Abaddon replaces Abaddon
@@ -217,6 +322,11 @@ actor TacDMPainElemental: PainElemental replaces PainElemental
     }
 }
 
+actor TacDMRevenantTracer: RevenantTracer replaces RevenantTracer
+{
+    DamageType TacDMExplosion
+}
+
 actor TacDMRevenant: Revenant replaces Revenant
 {
     States
@@ -230,6 +340,11 @@ actor TacDMRevenant: Revenant replaces Revenant
         TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
         goto Super::Death
     }
+}
+
+actor TacDMFatShot: FatShot replaces FatShot
+{
+    DamageType TacDMExplosion
 }
 
 actor TacDMFatso: Fatso replaces Fatso
@@ -247,6 +362,11 @@ actor TacDMFatso: Fatso replaces Fatso
     }
 }
 
+actor TacDMHectShot: HectShot replaces HectShot
+{
+    DamageType TacDMExplosion
+}
+
 actor TacDMHectebus: Hectebus replaces Hectebus
 {
     States
@@ -262,6 +382,11 @@ actor TacDMHectebus: Hectebus replaces Hectebus
     }
 }
 
+actor TacDMArachnotronPlasma: ArachnotronPlasma replaces ArachnotronPlasma
+{
+    DamageType TacDMExplosion
+}
+
 actor TacDMArachnotron: Arachnotron replaces Arachnotron
 {
     States
@@ -275,6 +400,11 @@ actor TacDMArachnotron: Arachnotron replaces Arachnotron
         TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
         goto Super::Death
     }
+}
+
+actor TacDMBaronBall: BaronBall replaces BaronBall
+{
+    DamageType TacDMExplosion
 }
 
 actor TacDMHellKnight: HellKnight replaces HellKnight
@@ -307,6 +437,11 @@ actor TacDMBaronOfHell: BaronOfHell replaces BaronOfHell
     }
 }
 
+actor TacDMBelphegorBall: BelphegorBall replaces BelphegorBall
+{
+    DamageType TacDMExplosion
+}
+
 actor TacDMBelphegor: Belphegor replaces Belphegor
 {
     States
@@ -337,10 +472,24 @@ actor TacDMArchVile: ArchVile replaces ArchVile
     }
 }
 
+actor TacDMCyberRocket: Rocket
+{
+    DamageType TacDMExplosion
+}
+
 actor TacDMCyberdemon: Cyberdemon replaces Cyberdemon
 {
     States
     {
+      Missile:
+        CYBR E 6 A_FaceTarget
+        CYBR F 12 bright A_CustomMissile("TacDMCyberRocket")
+        CYBR E 12 A_FaceTarget
+        CYBR F 12 bright A_CustomMissile("TacDMCyberRocket")
+        CYBR E 12 A_FaceTarget
+        CYBR F 12 bright A_CustomMissile("TacDMCyberRocket")
+        goto See
+
       Death.Massacre:
         TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
         TNT1 A 0 A_NoBlocking
@@ -356,6 +505,12 @@ actor TacDMSpiderMastermind: SpiderMastermind replaces SpiderMastermind
 {
     States
     {
+      Missile:
+        SPID A 20 bright A_FaceTarget
+        SPID GH 4 bright A_CustomBulletAttack(22.5, 0, 3, 3 + random(0,2), "TacDMBulletPuff")
+        SPID H 1 bright A_SpidRefire
+        goto Missile+1
+
       Death.Massacre:
         TNT1 A 0 ACS_ExecuteAlways(755, 0, 1, 0, 0)
         TNT1 A 0 A_NoBlocking

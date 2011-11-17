@@ -39,6 +39,14 @@
 }
 
 {
+    name = "T-Minigun"
+    class = "Walking Target"
+
+    sprite = "PLMG"
+    crouchsprite = "PMGC"
+}
+
+{
     name = "T-Rocket Launcher"
     class = "Walking Target"
 

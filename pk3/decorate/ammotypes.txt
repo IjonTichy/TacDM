@@ -1,62 +1,62 @@
 actor 9mmBullet: Ammo
 {
-  Inventory.Amount 12
-  Inventory.MaxAmount 72
-  Ammo.BackpackAmount 24
-  Ammo.BackpackMaxAmount 120
-  Inventory.Icon "CLIPA0"
+    Inventory.Amount 12
+    Inventory.MaxAmount 72
+    Ammo.BackpackAmount 24
+    Ammo.BackpackMaxAmount 120
+    Inventory.Icon "CLIPA0"
 }
 
 actor AssaultBullet: Ammo
 {
-  Inventory.Amount 30
-  Inventory.MaxAmount 180
-  Ammo.BackpackAmount 60
-  Ammo.BackpackMaxAmount 240
-  Inventory.Icon "CLIPA0"
+    Inventory.Amount 30
+    Inventory.MaxAmount 180
+    Ammo.BackpackAmount 60
+    Ammo.BackpackMaxAmount 240
+    Inventory.Icon "CLIPA0"
 }
 
 actor AmmoBelt: Ammo
 {
-  Inventory.Amount 50
-  Inventory.MaxAmount 250
-  Ammo.BackpackAmount 100
-  Ammo.BackpackMaxAmount 400
-  Inventory.Icon "AMMOA0"
+    Inventory.Amount 50
+    Inventory.MaxAmount 250
+    Ammo.BackpackAmount 100
+    Ammo.BackpackMaxAmount 400
+    Inventory.Icon "AMMOA0"
 }
 
 actor Buckshot: Ammo
 {
-  Inventory.Amount 4
-  Inventory.MaxAmount 32
-  Ammo.BackpackAmount 8
-  Ammo.BackpackMaxAmount 48
-  Inventory.Icon "SHELA0"
+    Inventory.Amount 4
+    Inventory.MaxAmount 32
+    Ammo.BackpackAmount 8
+    Ammo.BackpackMaxAmount 48
+    Inventory.Icon "SHELA0"
 }
 
 actor Slug: Ammo
 {
-  Inventory.Amount 1
-  Inventory.MaxAmount 8
-  Ammo.BackpackAmount 2
-  Ammo.BackpackMaxAmount 12
-  Inventory.Icon "SHELA0"
+    Inventory.Amount 1
+    Inventory.MaxAmount 8
+    Ammo.BackpackAmount 2
+    Ammo.BackpackMaxAmount 12
+    Inventory.Icon "SHELA0"
 }
 
 actor PineappleGrenade: Ammo
 {
-  Inventory.Amount 1
-  Inventory.MaxAmount 4
-  Ammo.BackpackAmount 2
-  Ammo.BackpackMaxAmount 6
-  Inventory.Icon "PGRNA0"
+    Inventory.Amount 1
+    Inventory.MaxAmount 4
+    Ammo.BackpackAmount 2
+    Ammo.BackpackMaxAmount 6
+    Inventory.Icon "PGRNA0"
 }
 
 actor TacDMRocketAmmo: Ammo
 {
-  Inventory.Amount 2
-  Inventory.MaxAmount 20
-  Ammo.BackpackAmount 4
-  Ammo.BackpackMaxAmount 30
-  Inventory.Icon "ROCKA0"
+    Inventory.Amount 2
+    Inventory.MaxAmount 20
+    Ammo.BackpackAmount 4
+    Ammo.BackpackMaxAmount 30
+    Inventory.Icon "ROCKA0"
 }

@@ -5,22 +5,23 @@
 #include "tactFunctions.h"
 #include "tactConstants.h"
 
-#define classCount 5
+#define classCount 7
 
 // I'll ignore the 80-char line thing just for this
 
-int classNames[classCount]   = {"Soldier",        "Shotgunner",        "Auto-Soldier",       "Chaingunner",        "Rocketeer"};
-int classImgs[classCount]    = {"SOLDIERD",       "SSGERD",            "SOLDIERD",           "SOLDIERD",           "SSGERD"};
-int classPacks[classCount]   = {"SoldierPack",    "ShotgunnerPack",    "AutoSoldierPack",    "ChaingunnerPack",    "RocketeerPack"};
-int botPacks[classCount]     = {"SoldierPackBot", "ShotgunnerPackBot", "AutoSoldierPackBot", "ChaingunnerPackBot", "RocketeerPackBot"};
-int classHealths[classCount] = {100,              90,                  100,                  140,                  100};
-int classSpeeds[classCount]  = {0.9,              1.0,                 0.85,                 0.6,                  1.0};
-int classJumpZs[classCount]  = {7.0,              8.0,                 7.0,                  6.0,                  8.0};
-int classCosts[classCount]   = {0,                500,                 750,                  3000,                 3000};
+int classNames[classCount]   = {"Soldier",        "Scout",        "Shotgunner",        "Auto-Soldier",       "Chaingunner",        "Rocketeer",        "Minigunner"};
+int classImgs[classCount]    = {"SOLDIERD",       "SSGERD",       "SSGERD",            "SOLDIERD",           "SOLDIERD",           "SSGERD",           "SOLDIERD"};
+int classPacks[classCount]   = {"SoldierPack",    "ScoutPack",    "ShotgunnerPack",    "AutoSoldierPack",    "ChaingunnerPack",    "RocketeerPack",    "MinigunnerPack"};
+int botPacks[classCount]     = {"SoldierPackBot", "ScoutPackBot", "ShotgunnerPackBot", "AutoSoldierPackBot", "ChaingunnerPackBot", "RocketeerPackBot", "MinigunnerPackBot"};
+int classHealths[classCount] = {100,              85,             90,                  100,                  140,                  100,                140};
+int classSpeeds[classCount]  = {0.9,              1.1,            1.0,                 0.85,                 0.6,                  1.0,                0.6};
+int classJumpZs[classCount]  = {7.0,              8.0,            8.0,                 7.0,                  6.0,                  8.0,                6.0};
+int classCosts[classCount]   = {0,                0,              500,                 750,                  3000,                 3000,               5000};
 
 
 int teamNames[5] = {"Blue", "Red", "Green", "Gold", "No"};
 
+int canSwitch[32];
 int teamNewCash[5][5];
 int teamNewCashReason[5][5];
 
@@ -29,9 +30,18 @@ int classDescs[classCount]   = {
 much in the way of benefits. You get an assault rifle, a pistol, some grenades,\n\
 and that's it. You can't even take buildings down, for christ's sake! No one\n\
 would really want to be this guy when the war starts raging, but at the\n\
-beginning, you have to choke the shit down and get over it.\n\
+beginning, you have to take a bullet for the team. Or multiple. You might not\n\
+be the only one doing this either..\n\
 \n\
-At least it kills infantry well enough.",
+At least it kills infantry well enough. Even that's a bit lacking, though.",
+
+"Pestering is your job, and for you, your life. All you do is run around, taking\n\
+potshots at your enemies before they can react. You run /really/ light, not even\n\
+holding any grenades on you by default - only a pistol and shotgun for you!\n\
+Luckily, this means you can run faster than most of the people you'll be fighting - \n\
+the people who can run faster than you are also the sort of people who have wide-\n\
+angle laser beams for fingers, and you really shouldn't fight them, unless you\n\
+have a fetish for \caDYING ALL THE TIME\c-.",
 
 "You just came straight from a deathmatch, didn't you. Well, you'll feel right\n\
 at home with this guy - he has both shotguns and you probably won't be running\n\
@@ -70,7 +80,18 @@ less than a second, and super shotguns that take more than about a second to \n\
 fire. But your rocket launcher is more powerful, and damages you less!\n\
 \n\
 Yeah, they're pretty much screwed.\n\
-One thing though. Bullets... kinda hurt a helluvalot more. 50% more.",};
+One thing though. Bullets... kinda hurt a helluvalot more. 50% more.",
+
+"Hey, minigun! The hell with chainguns! You might as well be a chaingunner,\n\
+except that you have a minigun, instead. of a chaingunner. Is that worth a\n\
+$2000 price increase?\n\
+\cgHELL YEAH IT IS.\c-\n\
+The minigun, at the very least, fires 50% faster than the chaingun, and at full\n\
+auto, fires three times as fast as it, and does the same damage-per-bullet. The\n\
+only thing is, the minigun is /big/. That thing firing will slow you down to no\n\
+end. If you're chain-firing, kiss mobility goodbye.\n\
+But hey, everything you see pretty much dies instantly. It's what you don't see...\n\
+Be very wary of explosives. The sitting duck tends to attract them.",};
 
 global int 4:teamCash[];
 global int 5:playerClassNums[];
@@ -92,6 +113,8 @@ script TACDM_AUTO_COMMON (void)
 {
     int pln = PlayerNumber();
     playerTeams[pln] = GetPlayerInfo(pln, PlAYERINFO_TEAM);
+
+    TakeInventory("ClassSwitcherNoInvuln", 1);
 
     if (PlayerIsBot(pln))
     {
@@ -140,16 +163,10 @@ script TACDM_AUTO_ENTER enter
     int pln    = PlayerNumber();
     int plc    = playerClassNums[pln];
     int isCoop = isCooperative();
-    int choice = !isCoop || (plc == 0);
 
     ACS_ExecuteAlways(TACDM_AUTO_COMMON, 0, 0,0,0);
 
-    if (isCoop)
-    {
-        GiveInventory("ClassSwitcher", 1);
-    }
-
-    if (choice == 1)
+    if (!isCoop || plc == 0)
     {
         ACS_ExecuteAlways(TACDM_CHOOSECLASS, 0, 0,0,0);
     }
@@ -166,7 +183,7 @@ script TACDM_AUTO_RESPAWN respawn
 
     ACS_ExecuteAlways(TACDM_AUTO_COMMON, 0, 0,0,0);
 
-    if ((bDown & BT_ALTATTACK) || (plc == 0))
+    if ((bDown & BT_ALTATTACK) || (plc == 0) || (PlayerIsBot(pln) && random(GetCVar("skill"), 4) == 4))
     {
         ACS_ExecuteAlways(TACDM_CHOOSECLASS,  0, plc,0,0);
 
@@ -204,53 +221,68 @@ script TACDM_AUTO_DISCONNECT (int pln) disconnect
 
 
 
-
-
-
-script TACDM_ITEM_CLASS (void)
+script TACDM_SCALESPEED (int argInt, int argFrac, int which)
 {
-    int pln = PlayerNumber();
-    int plc = playerClassNums[pln];
+    int arg = (argInt << 16) + ((argFrac << 16) / 100);
 
-    int dx = GetActorVelX(0);
-    int dy = GetActorVelY(0);
-    int dz = GetActorVelZ(0);
+    SetActorProperty(0, APROP_Speed, arg);
+}
 
-    if (dx || dy || dz)
-    {
-        Print(s:"You must be standing still to use this object");
-    }
-    else
-    {
-        ACS_ExecuteAlways(TACDM_CHOOSECLASS, 0, plc);
-    }
+script TACDM_ITEM_CLASS (int noProtect)
+{
+    int plc = playerClassNums[PlayerNumber()];
+
+    ACS_ExecuteAlways(TACDM_CHOOSECLASS, 0, plc, noProtect);
 }
 
 
 
-script TACDM_CHOOSECLASS (int lastClass)
+script TACDM_CHOOSECLASS (int lastClass, int noProtect)
 {
-    int i;
+    int i; int j;
     int choseClass;
-    int classScrolled;
     int bDown; int bLast; int bOld; int bHeld; int bPressed; int bReleased;
     int firstGo = 1;
 
     int pln = PlayerNumber();
+    int myClass = playerClassNums[pln];
     int team = GetPlayerInfo(pln, PLAYERINFO_TEAM);
+    int classScrolled = max(0, lastClass - 1);
     int flash;
 
     ClearInventory();
-    GiveInventory("SpawnProtection", 1);
+
+    GiveInventory("SpawnStop", 1);
+    if (!noProtect)
+    {
+        GiveInventory("SpawnProtection", 1);
+    }
 
     if (PlayerIsBot(pln))
     {
-        classScrolled = Random(0, classCount-1);
+        classScrolled = classCount-1;
 
         while (classCosts[classScrolled] > getTeamCash(team))
         {
-            classScrolled = Random(0, classCount-1);
+            classScrolled--;
+
+            if (classCosts[myClass - 1] > classCosts[classScrolled])
+            {
+                terminate;
+            }
         }
+
+        i = classCosts[classScrolled];
+
+        for (j = classScrolled - 1; j > 0; j--)
+        {
+            if (classCosts[j] != i)
+            {
+                break;
+            }
+        }
+
+        classScrolled = random(j, classScrolled);
     }
     else
     {
@@ -459,12 +491,16 @@ script TACDM_HUD (void)
     int pln = PlayerNumber();
     int team;
     int newCash; int reason; int color;
+    int cost;
 
+    int cash    = getTeamCash(team);
+    int oldCash = getTeamCash(team);
     SetHudSize(640, 480, 1);
 
     while (PlayerInGame(pln))
     {
         team = playerTeams[pln];
+        cash = getTeamCash(team);
         HudMessage(s:teamNames[team], s:" team's Cash: \cd$", d:getTeamCash(team); HUDMSG_PLAIN | HUDMSG_COLORSTRING,
         TACDM_HUDPRINTOFFSET, teamNames[team], 630.2, 10.1, 1.0);
 
@@ -488,6 +524,27 @@ script TACDM_HUD (void)
             }
         }
 
+        for (i = 0; i < classCount; i++)
+        {
+            cost = classCosts[i];
+
+            if (cash >= cost && oldCash < cost)
+            {
+                inc = (i * spacing) << 16;
+                HudMessage(s:classNames[i];
+                HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
+                TACDM_HUDPRINTOFFSET-39+i, "Green", 550.3, 300.1+inc, 5.0, 0.5);
+            }
+            else if (cash < cost && oldCash >= cost)
+            {
+                inc = (i * spacing) << 16;
+                HudMessage( s:classNames[i];
+                HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
+                TACDM_HUDPRINTOFFSET-39+i, "Red", 550.3, 300.1+inc, 5.0, 0.5);
+            }
+        }
+
+        oldCash = cash;
         Delay(1);
     }
 }
@@ -552,12 +609,14 @@ script TACDM_PAYFORKILL (int isMonster, int amount)
     {
         amount = killedHP / 5;
         ACS_ExecuteAlways(TACDM_ADDMONEY, 0, killerTeam, amount, 0);
+        ACS_ExecuteAlways(TACDM_LETTHEREBESWITCH, 0, 105,0,0);
     }
     else if (killedTeam == killerTeam)
     {
         if ((killedTeam == 4) && (killedPln != killerPln))
         {
             ACS_ExecuteAlways(TACDM_ADDMONEY, 0, killerTeam, amount, 0);
+            ACS_ExecuteAlways(TACDM_LETTHEREBESWITCH, 0, 105,0,0);
         }
         else
         {
@@ -567,6 +626,7 @@ script TACDM_PAYFORKILL (int isMonster, int amount)
     else
     {
         ACS_ExecuteAlways(TACDM_ADDMONEY, 0, killerTeam, amount, 0);
+        ACS_ExecuteAlways(TACDM_LETTHEREBESWITCH, 0, 105,0,0);
     }
 }
 
@@ -601,10 +661,28 @@ function int getTeamCash(int team)
 
 function void setTeamCash(int team, int amount)
 {
-    teamCash[team*2] = amount;
+    teamCash[team*2] = max(0, amount);
 }
 
 function void changeTeamCash(int team, int amount)
 {
-    teamCash[team*2] += amount;
+    teamCash[team*2] = max(0, teamCash[team*2]+amount);
+}
+
+
+
+script TACDM_LETTHEREBESWITCH (int time)
+{
+    int pln = PlayerNumber();
+
+    GiveInventory("ClassSwitcherNoInvuln", 1);
+    canSwitch[pln] += 1;
+
+    Delay(time);
+    canSwitch[pln] -= 1;
+
+    if (!canSwitch[pln])
+    {
+        TakeInventory("ClassSwitcherNoInvuln", 1);
+    }
 }

@@ -1,0 +1,37 @@
+actor MinigunnerPack: TacDMPack
+{
+    States
+    {
+      Use:
+        TNT1 A 0 A_GiveInventory("Grinder")
+        TNT1 A 0 A_GiveInventory("Pineapple Grenade")
+        TNT1 A 0 A_GiveInventory("9mm Pistol")
+        TNT1 A 0 A_GiveInventory("Knuckleduster")
+
+        TNT1 A 0 A_GiveInventory("PineappleGrenade", 4)
+        TNT1 A 0 A_GiveInventory("9mmBullet", 72)
+        TNT1 A 0 A_GiveInventory("AmmoBelt", 250)
+        TNT1 A 0 A_GiveInventory("RocketWeakness")
+        stop
+    }
+}
+
+actor MinigunnerPackBot: TacDMPack
+{
+    States
+    {
+      Use:
+        TNT1 A 0 A_GiveInventory("Knuckleduster")
+        TNT1 A 0 A_GiveInventory("9mm~Pistol")
+        TNT1 A 0 A_GiveInventory("Pineapple Grenade")
+        TNT1 A 0 A_GiveInventory("Grinder")
+
+        TNT1 A 0 A_GiveInventory("PineappleGrenade", 4)
+        TNT1 A 0 A_GiveInventory("9mmBullet", 72)
+        TNT1 A 0 A_GiveInventory("AmmoBelt", 250)
+        TNT1 A 0 A_GiveInventory("RocketWeakness")
+        stop
+    }
+}
+
+// RocketWeakness defined in chaingunner.txt

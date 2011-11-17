@@ -15,6 +15,10 @@ $limit tacticaldm/chaingufire       0
 tacticaldm/assaultriflefire         sounds/assaultrifle_fire.wav
 $limit tacticaldm/assaultriflefire  0
 
+tacticaldm/grinderup                sounds/grinder_up.wav
+tacticaldm/grinderspin              sounds/grinder_spin.wav
+tacticaldm/grinderdown              sounds/grinder_down.wav
+
 
 tacticaldm/grenadebounce            sounds/grenade_bounce.wav
 tacticaldm/grenadethrow             sounds/grenade_throw.wav

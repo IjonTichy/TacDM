@@ -9,6 +9,8 @@ actor "Assault Rifle": TacDMWeapon
 
     Weapon.SlotNumber 3
 
+    Obituary "%k took %o down."
+
     +NOAUTOFIRE
 
     States

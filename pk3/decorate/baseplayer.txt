@@ -85,16 +85,26 @@ actor IsBot: Inventory
 
 
 
-actor SpawnProtection: CustomInventory
+actor SpawnStop: CustomInventory
 {
     States
     {
       Pickup:
         TNT1 A 0 SetPlayerProperty(0, 1, 0)
+        stop
+    }
+}
+
+actor SpawnProtection: CustomInventory
+{
+    States
+    {
+      Pickup:
         TNT1 A 0 A_ChangeFlag("SOLID", 0)
         TNT1 A 0 A_ChangeFlag("SHOOTABLE", 0)
         TNT1 A 0 A_ChangeFlag("NOTARGET", 1)
         TNT1 A 0 A_HideThing
+        stop
     }
 }
 
@@ -108,6 +118,7 @@ actor EndSpawnProtection: CustomInventory
         TNT1 A 0 A_ChangeFlag("SHOOTABLE", 1)
         TNT1 A 0 A_ChangeFlag("NOTARGET", 1)
         TNT1 A 0 A_UnhideThing
+        stop
     }
 }
 
@@ -127,6 +138,26 @@ actor ClassSwitcher: CustomInventory   // only given in Coop
 
       Use:
         TNT1 A 0 ACS_ExecuteAlways(733)
+        fail
+    }
+}
+
+actor ClassSwitcherNoInvuln: CustomInventory
+{
+    Inventory.MaxAmount 1
+    +UNDROPPABLE
+    +INVBAR
+
+    Inventory.Icon "PINVB0"
+
+    States
+    {
+      Spawn:
+        TNT1 A -1
+        stop
+
+      Use:
+        TNT1 A 0 ACS_ExecuteAlways(733, 0, 1)
         fail
     }
 }

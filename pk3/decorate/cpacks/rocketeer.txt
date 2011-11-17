@@ -46,5 +46,6 @@ actor RocketResistance: PowerProtection
     Powerup.Duration 0x7FFFFFFF
 
     DamageFactor TacDMExplosion, 0.3
+    DamageFactor TacDMMonster,   0.5
     DamageFactor TacDMPhysical,  1.5
 }
