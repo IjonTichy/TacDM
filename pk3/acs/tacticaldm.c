@@ -251,7 +251,7 @@ script TACDM_CHOOSECLASS (int lastClass, int noProtect)
     int myClass = playerClassNums[pln];
     int team = GetPlayerInfo(pln, PLAYERINFO_TEAM);
     int classScrolled = max(0, lastClass - 1);
-    int flash;
+    int flash; int noSelect;
 
     ClearInventory();
 
@@ -264,28 +264,32 @@ script TACDM_CHOOSECLASS (int lastClass, int noProtect)
     if (PlayerIsBot(pln))
     {
         classScrolled = classCount-1;
-
+        PrintBold(n:pln+1);
         while (classCosts[classScrolled] > getTeamCash(team))
         {
             classScrolled--;
 
             if (classCosts[myClass - 1] > classCosts[classScrolled])
             {
-                terminate;
-            }
-        }
-
-        i = classCosts[classScrolled];
-
-        for (j = classScrolled - 1; j > 0; j--)
-        {
-            if (classCosts[j] != i)
-            {
+                classScrolled = max(0, lastClass - 1);  // last ditch as soldier
+                noSelect = 1;
                 break;
             }
         }
 
-        classScrolled = random(j, classScrolled);
+        if (!noSelect)
+        {
+        i = classCosts[classScrolled];
+        
+            for (j = classScrolled - 1; j > 0; j--)
+            {
+                if (classCosts[j] != i)
+                {
+                     break;
+                }
+            }
+            classScrolled = random(j, classScrolled);
+        }
     }
     else
     {

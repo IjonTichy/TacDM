@@ -2,3 +2,5 @@
 *.pk3
 *.o
 packagepk3.sh
+.*
+!.git*
