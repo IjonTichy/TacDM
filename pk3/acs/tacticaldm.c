@@ -86,8 +86,8 @@ One thing though. Bullets... kinda hurt a helluvalot more. 50% more. Beware\n\
 of chainguns.",
 
 "Hey, minigun! The hell with chainguns! You might as well be a chaingunner,\n\
-except that you have a minigun, instead. of a chaingunner. Is that worth a\n\
-$2000 price increase?\n\
+except that you have a minigun, instead of a chaingun. Is that worth a $2000\n\
+price increase?\n\
 \cgHELL YEAH IT IS.\c-\n\
 The minigun, at the very least, fires 50% faster than the chaingun, and at full\n\
 auto, fires three times as fast as it, and does the same damage-per-bullet. The\n\
