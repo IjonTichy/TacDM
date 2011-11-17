@@ -62,7 +62,9 @@ a result, its accuracy is much worse compared to its semi-auto brethren. You\n\
 can hold more ammo for it, but it doesn't pack as much as a punch as the\n\
 other's rounds. You do fire faster, though, but is it really enough to\n\
 compensate for it?\n\
-Yes, probably, but hey.",
+Yes, probably, but hey. At the very least, it's a ton easier to take out those\n\
+pesky scouts, shotgunners, and rocketeers. After all, your aim isn't jostled by\n\
+pulling the trigger...",
 
 "Hey, chaingun! The hell with respect! You are made of solid meat, and have a\n\
 hefty 140 HP to stay up, although your running capabilities are kinda... bad.\n\
