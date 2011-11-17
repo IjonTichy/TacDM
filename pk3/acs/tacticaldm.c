@@ -82,7 +82,8 @@ less than a second, and super shotguns that take more than about a second to \n\
 fire. But your rocket launcher is more powerful, and damages you less!\n\
 \n\
 Yeah, they're pretty much screwed.\n\
-One thing though. Bullets... kinda hurt a helluvalot more. 50% more.",
+One thing though. Bullets... kinda hurt a helluvalot more. 50% more. Beware\n\
+of chainguns.",
 
 "Hey, minigun! The hell with chainguns! You might as well be a chaingunner,\n\
 except that you have a minigun, instead. of a chaingunner. Is that worth a\n\
