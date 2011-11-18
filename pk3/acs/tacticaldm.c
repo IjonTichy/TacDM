@@ -493,8 +493,7 @@ script TACDM_SETUPCLASS (void)
 
 script TACDM_HUD (void)
 {
-    int i; int inc;
-    int spacing = 10;
+    int i; int incX; int incY;
     int pln = PlayerNumber();
     int team;
     int newCash; int reason; int color;
@@ -519,15 +518,15 @@ script TACDM_HUD (void)
 
             if (newCash > 0)
             {
-                inc = (i * spacing) << 16;
+                incY = (i * CLASS_SPACING_Y) << 16;
                 HudMessage(s:"+$", d:newCash; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
-                TACDM_HUDPRINTOFFSET+1+i, color, 625.2, 25.1+inc, 0.1, 0.25);
+                TACDM_HUDPRINTOFFSET+1+i, color, 625.2, 25.1+incY, 0.1, 0.25);
             }
             else if (newCash < 0)
             {
-                inc = (i * spacing) << 16;
+                incY = (i * CLASS_SPACING_Y) << 16;
                 HudMessage(s:"-$", d:-newCash; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
-                TACDM_HUDPRINTOFFSET+1+i, color, 625.2, 25.1+inc, 0.1, 0.25);
+                TACDM_HUDPRINTOFFSET+1+i, color, 625.2, 25.1+incY, 0.1, 0.25);
             }
         }
 
@@ -537,17 +536,19 @@ script TACDM_HUD (void)
 
             if (cash >= cost && oldCash < cost)
             {
-                inc = (i * spacing) << 16;
+                incX = ((i / CLASS_MAX) * CLASS_SPACING_X) << 16;
+                incY = ((i % CLASS_MAX) * CLASS_SPACING_Y) << 16;
                 HudMessage(s:classNames[i];
                 HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
-                TACDM_HUDPRINTOFFSET-39+i, "Green", 550.3, 300.1+inc, 5.0, 0.5);
+                TACDM_HUDPRINTOFFSET-39+i, "Green", 490.3 + incX, 300.1+incY, 5.0, 0.5);
             }
             else if (cash < cost && oldCash >= cost)
             {
-                inc = (i * spacing) << 16;
+                incX = ((i / CLASS_MAX) * CLASS_SPACING_X) << 16;
+                incY = ((i % CLASS_MAX) * CLASS_SPACING_Y) << 16;
                 HudMessage( s:classNames[i];
                 HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
-                TACDM_HUDPRINTOFFSET-39+i, "Red", 550.3, 300.1+inc, 5.0, 0.5);
+                TACDM_HUDPRINTOFFSET-39+i, "Red", 490.3 + incX, 300.1+incY, 5.0, 0.5);
             }
         }
 

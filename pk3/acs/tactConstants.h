@@ -29,6 +29,10 @@
 
 #define TACDM_INTERNAL_CHANGEMONEY TACDM_BASEOFFSET+51
 
+#define CLASS_SPACING_X           80
+#define CLASS_SPACING_Y           10
+#define CLASS_MAX                 10
+
 
 #define REASON_GOTKILL            0
 #define REASON_SUICIDE            1
