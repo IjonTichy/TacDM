@@ -11,9 +11,10 @@ tacticaldm/shotreload               sounds/shotgun_reload.ogg
 tacticaldm/chaingunfire             sounds/chaingun_fire.lmp
 $limit tacticaldm/chaingufire       0
 
-
 tacticaldm/assaultriflefire         sounds/assaultrifle_fire.wav
 $limit tacticaldm/assaultriflefire  0
+
+tacticaldm/rocketaltfire            sounds/rocket_altfire.ogg
 
 tacticaldm/grinderup                sounds/grinder_up.wav
 tacticaldm/grinderspin              sounds/grinder_spin.wav

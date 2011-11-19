@@ -11,7 +11,6 @@ actor Grinder: TacDMWeapon
     Inventory.PickupMessage "Grinder"
 
     AttackSound "weapons/minigun"
-    DamageType TacDMPhysical
 
     Weapon.PreferredSkin "T-Minigun"
     Obituary "%k butchered %o."
@@ -61,12 +60,12 @@ actor Grinder: TacDMWeapon
         MNGG A 0 ACS_ExecuteAlways(738, 0, 1, 0)
         MNGG A 0 A_GunFlash
         MNGG A 0 ACS_ExecuteAlways(738, 0, 0, 80)
-        MNGG A 2 bright A_FireBullets(3, 3, -1, 20, "BulletPuff")
+        MNGG A 2 bright A_FireBullets(3, 3, -1, 20, "TacDMBulletPuff")
         MNGG B 2 bright
         MNGG CD 2
         MNGG A 0 A_GunFlash
         MNGG A 0 ACS_ExecuteAlways(738, 0, 0, 60)
-        MNGG A 1 bright A_FireBullets(3, 3, -1, 20, "BulletPuff")
+        MNGG A 1 bright A_FireBullets(3, 3, -1, 20, "TacDMBulletPuff")
         MNGG BCD 1 bright
         goto Hold
 
@@ -74,7 +73,7 @@ actor Grinder: TacDMWeapon
         MNGG A 0 A_JumpIfInventory("GrinderSpin", 1, "SpinFire")
         MNGG A 0 ACS_ExecuteAlways(738, 0, 0, 40)
         MNGG A 0 A_GunFlash
-        MNGG A 1 bright A_FireBullets(3, 3, -1, 20, "BulletPuff")
+        MNGG A 1 bright A_FireBullets(3, 3, -1, 20, "TacDMBulletPuff")
         MNGG C 1 bright
         MNGG ABCD 1 bright A_ReFire
         MNGG A 0 ACS_ExecuteAlways(738, 0, 1, 0)
@@ -84,8 +83,8 @@ actor Grinder: TacDMWeapon
       SpinFire:
         MNGG A 0 ACS_ExecuteAlways(738, 0, 0, 15)
         MNGG A 0 A_GunFlash
-        MNGG A 1 bright A_FireBullets(5, 5, -1, 20, "BulletPuff")
-        MNGG C 1 bright A_FireBullets(5, 5, -1, 20, "BulletPuff")
+        MNGG A 1 bright A_FireBullets(5, 5, -1, 20, "TacDMBulletPuff")
+        MNGG C 1 bright A_FireBullets(5, 5, -1, 20, "TacDMBulletPuff")
         MNGG C 0 A_Refire
         goto Ready
 

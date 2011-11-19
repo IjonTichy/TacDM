@@ -47,7 +47,7 @@ actor "Rocket Launcher": TacDMWeapon
       AltFire:
         PKRL A 3 A_GunFlash
         PKRL B 1
-        PKRL D 0 A_PlaySound("betterdoomweapons/rocketaltfire", CHAN_WEAPON)
+        PKRL D 0 A_PlaySound("tacticaldm/rocketaltfire", CHAN_WEAPON)
         PKRL D 0 A_Recoil(6)
         PKRL D 0  A_FireCustomMissile("TacDMTinyRocket", -15, 0, -6, 0, 0,  0)
         PKRL D 0  A_FireCustomMissile("TacDMTinyRocket",  15, 0,  6, 0, 0,  0)
