@@ -16,7 +16,7 @@ int botPacks[classCount]     = {"SoldierPackBot", "ScoutPackBot", "ShotgunnerPac
 int classHealths[classCount] = {100,              85,             90,                  100,                  140,                  100,                140};
 int classSpeeds[classCount]  = {0.9,              1.1,            1.0,                 0.85,                 0.6,                  1.0,                0.6};
 int classJumpZs[classCount]  = {7.0,              8.0,            8.0,                 7.0,                  6.0,                  8.0,                6.0};
-int classCosts[classCount]   = {0,                0,              500,                 750,                  3000,                 3000,               5000};
+int classCosts[classCount]   = {0,                0,              500,                 500,                  5000,                 5000,               20000};
 
 
 int teamNames[5] = {"Blue", "Red", "Green", "Gold", "No"};
@@ -86,8 +86,8 @@ One thing though. Bullets... kinda hurt a helluvalot more. 50% more. Beware\n\
 of chainguns.",
 
 "Hey, minigun! The hell with chainguns! You might as well be a chaingunner,\n\
-except that you have a minigun, instead of a chaingun. Is that worth a $2000\n\
-price increase?\n\
+except that you have a minigun and shotgun, instead of a chaingun. Is that\n\
+worth a $2000 price increase?\n\
 \cgHELL YEAH IT IS.\c-\n\
 The minigun, at the very least, fires 50% faster than the chaingun, and at full\n\
 auto, fires three times as fast as it, and does the same damage-per-bullet. The\n\
@@ -106,6 +106,26 @@ function int isCooperative(void)
                 (GetCVar("deathmatch") == false);
 
     return ret;
+}
+
+function int getClass(int pln)
+{
+    return playerClassNums[pln] - 1;
+}
+
+function int getTeamCash(int team)
+{
+    return teamCash[team*2];
+}
+
+function void setTeamCash(int team, int amount)
+{
+    teamCash[team*2] = max(0, amount);
+}
+
+function void changeTeamCash(int team, int amount)
+{
+    teamCash[team*2] = max(0, teamCash[team*2]+amount);
 }
 
 
@@ -130,12 +150,12 @@ script TACDM_AUTO_OPEN open
 {
     int i;
 
-    if (GetCVar("tacdm_varsexist") != 1)
+    if (GetCVar("tacdm_varsexist") != 2)
     {
-        ConsoleCommand("set tacdm_varsexist        1");
+        ConsoleCommand("set tacdm_varsexist        2");
         ConsoleCommand("set tacdm_startcash        3000");
-        ConsoleCommand("set tacdm_moneyperkill     125");
-        ConsoleCommand("set tacdm_moneylostondeath 125");
+        ConsoleCommand("set tacdm_moneyperkill     50");
+        ConsoleCommand("set tacdm_moneylostondeath 50");
 
         ConsoleCommand("archivecvar tacdm_varsexist");
         ConsoleCommand("archivecvar tacdm_startcash");
@@ -281,7 +301,6 @@ script TACDM_CHOOSECLASS (int lastClass, int noProtect)
     if (PlayerIsBot(pln))
     {
         classScrolled = classCount-1;
-        PrintBold(n:pln+1);
         while (classCosts[classScrolled] > getTeamCash(team))
         {
             classScrolled--;
@@ -661,28 +680,40 @@ script TACDM_PAYFORKILL (int isMonster, int amount)
     int killerPln = PlayerNumber();
     int killerTeam = playerTeams[killerPln];
 
+    if (!amount)
+    {
+        amount = GetCVar("tacdm_moneyperkill");
+    }
+
+    int newAmount;
+
     if (isMonster)
     {
         amount = killedHP / 5;
         ACS_ExecuteAlways(TACDM_ADDMONEY, 0, killerTeam, amount, 0);
         ACS_ExecuteAlways(TACDM_LETTHEREBESWITCH, 0, 105,0,0);
     }
-    else if (killedTeam == killerTeam)
+    else
     {
-        if ((killedTeam == 4) && (killedPln != killerPln))
+        newAmount = amount + (classCosts[getClass(killedPln)] / 4);
+
+        if (killedTeam == killerTeam)
         {
-            ACS_ExecuteAlways(TACDM_ADDMONEY, 0, killerTeam, amount, 0);
-            ACS_ExecuteAlways(TACDM_LETTHEREBESWITCH, 0, 105,0,0);
+            if ((killedTeam == 4) && (killedPln != killerPln))
+            {
+                ACS_ExecuteAlways(TACDM_ADDMONEY, 0, killerTeam, newAmount, 0);
+                ACS_ExecuteAlways(TACDM_LETTHEREBESWITCH, 0, SWITCH_TIME,0,0);
+            }
+            else
+            {
+                ACS_ExecuteAlways(TACDM_TAKEMONEY, 0, killerTeam, amount, 0);
+            }
         }
         else
         {
-            ACS_ExecuteAlways(TACDM_TAKEMONEY, 0, killerTeam, amount, 0);
+            ACS_ExecuteAlways(TACDM_ADDMONEY, 0, killerTeam, newAmount, 0);
+            ACS_ExecuteAlways(TACDM_LETTHEREBESWITCH, 0, SWITCH_TIME,0,0);
         }
-    }
-    else
-    {
-        ACS_ExecuteAlways(TACDM_ADDMONEY, 0, killerTeam, amount, 0);
-        ACS_ExecuteAlways(TACDM_LETTHEREBESWITCH, 0, 105,0,0);
     }
 }
 
@@ -709,22 +740,6 @@ script TACDM_INTERNAL_CHANGEMONEY (int team, int amount, int reason)
 
     teamNewCash[team][emptySlot] -= amount;
 }
-
-function int getTeamCash(int team)
-{
-    return teamCash[team*2];
-}
-
-function void setTeamCash(int team, int amount)
-{
-    teamCash[team*2] = max(0, amount);
-}
-
-function void changeTeamCash(int team, int amount)
-{
-    teamCash[team*2] = max(0, teamCash[team*2]+amount);
-}
-
 
 
 script TACDM_LETTHEREBESWITCH (int time)

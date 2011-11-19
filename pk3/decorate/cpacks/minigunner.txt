@@ -5,6 +5,7 @@ actor MinigunnerPack: TacDMPack
       Use:
         TNT1 A 0 A_GiveInventory("Grinder")
         TNT1 A 0 A_GiveInventory("Pineapple Grenade")
+        TNT1 A 0 A_GiveInventory("Pump-action Shotgun")
         TNT1 A 0 A_GiveInventory("9mm Pistol")
         TNT1 A 0 A_GiveInventory("Knuckleduster")
 
@@ -23,6 +24,7 @@ actor MinigunnerPackBot: TacDMPack
       Use:
         TNT1 A 0 A_GiveInventory("Knuckleduster")
         TNT1 A 0 A_GiveInventory("9mm~Pistol")
+        TNT1 A 0 A_GiveInventory("Pump-action Shotgun")
         TNT1 A 0 A_GiveInventory("Pineapple Grenade")
         TNT1 A 0 A_GiveInventory("Grinder")
 

@@ -53,6 +53,7 @@
 #define HUD_SPACING_Y               12
 #define HUD_MAX                     10
 
+#define SWITCH_TIME                 105
 
 #define REASON_GOTKILL              0
 #define REASON_SUICIDE              1
