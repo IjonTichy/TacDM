@@ -150,19 +150,21 @@ script TACDM_AUTO_OPEN open
 {
     int i;
 
-    if (GetCVar("tacdm_varsexist") != 2)
+    if (GetCVar("tacdm_varsexist") != 3)
     {
-        ConsoleCommand("set tacdm_varsexist        2");
+        ConsoleCommand("set tacdm_varsexist        3");
         ConsoleCommand("set tacdm_startcash        3000");
         ConsoleCommand("set tacdm_moneyperkill     50");
         ConsoleCommand("set tacdm_moneylostondeath 50");
+        ConsoleCommand("set tacdm_monstermult      2");
 
         ConsoleCommand("archivecvar tacdm_varsexist");
         ConsoleCommand("archivecvar tacdm_startcash");
         ConsoleCommand("archivecvar tacdm_moneyperkill");
         ConsoleCommand("archivecvar tacdm_moneylostondeath");
+        ConsoleCommand("archivecvar tacdm_monstermult");
 
-        Log(s:"For any server hosts:\nCVars (all preceded by \"tacdm_\": startcash moneyperkill moneylostondeath");
+        Log(s:"For any server hosts:\nCVars (all preceded by \"tacdm_\": startcash moneyperkill moneylostondeath monstermult");
     }
 
     for (i = 0; i < 5; i++)
@@ -194,7 +196,7 @@ script TACDM_AUTO_OPEN_CLIENT open clientside
         ConsoleCommand("archivecvar tacdm_client_varsexist");
         ConsoleCommand("archivecvar tacdm_client_showclasses");
 
-        Log(s:"CVars (all preceded by \"tacdm_client\": showclasses");
+        Log(s:"CVars (all preceded by \"tacdm_client_\": showclasses");
     }
 }
 
@@ -630,6 +632,12 @@ script TACDM_ADDMONEY (int team, int amount, int maxAmount)
     int emptySlot;
     int addAmount;
     int addGap;
+    int reason = REASON_GOTKILL;
+
+    if (amount < 0)
+    {
+        reason = REASON_SUICIDE;
+    }
 
     if (amount == 0)
     {
@@ -645,7 +653,7 @@ script TACDM_ADDMONEY (int team, int amount, int maxAmount)
     addGap    = addAmount - min(addAmount, maxAmount);
     addAmount = amount - addGap;
 
-    ACS_ExecuteAlways(TACDM_INTERNAL_CHANGEMONEY, 0, team, addAmount, REASON_GOTKILL);
+    ACS_ExecuteAlways(TACDM_INTERNAL_CHANGEMONEY, 0, team, addAmount, reason);
 }
 
 
@@ -655,6 +663,12 @@ script TACDM_TAKEMONEY (int team, int amount, int minAmount)
     int takeAmount;
     int takeGap;
     int ret;
+    int reason = REASON_SUICIDE;
+
+    if (amount < 0)
+    {
+        reason = REASON_GOTKILL;
+    }
 
     if (amount == 0)
     {
@@ -665,7 +679,7 @@ script TACDM_TAKEMONEY (int team, int amount, int minAmount)
     takeGap    = max(takeAmount, minAmount) - takeAmount;
     ret        = -(amount - takeGap);
 
-    ACS_ExecuteAlways(TACDM_INTERNAL_CHANGEMONEY, 0, team, ret, REASON_SUICIDE);
+    ACS_ExecuteAlways(TACDM_INTERNAL_CHANGEMONEY, 0, team, ret, reason);
 }
 
 
@@ -689,7 +703,7 @@ script TACDM_PAYFORKILL (int isMonster, int amount)
 
     if (isMonster)
     {
-        amount = killedHP / 5;
+        amount = (killedHP / 10) * GetCVar("tacdm_monstermult");
         ACS_ExecuteAlways(TACDM_ADDMONEY, 0, killerTeam, amount, 0);
         ACS_ExecuteAlways(TACDM_LETTHEREBESWITCH, 0, 105,0,0);
     }
