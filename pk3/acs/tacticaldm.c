@@ -531,29 +531,21 @@ script TACDM_SETUPCLASS (void)
 
 script TACDM_HUD (void)
 {
-    int i; int incX; int incY;
+    int i;
     int pln = PlayerNumber();
     int team;
     int newCash; int reason; int color;
-    int cost;
 
     int cash    = getTeamCash(team);
     int oldCash = getTeamCash(team);
-    SetHudSize(640, 480, 1);
+
 
     while (PlayerInGame(pln))
     {
         team = playerTeams[pln];
         cash = getTeamCash(team);
 
-        //-----
-
-        SetHudSize(HUD_ASPECT1_W, HUD_ASPECT1_H, 1);
-
-        HudMessage(s:teamNames[team], s:" team's Cash: \cd$", d:getTeamCash(team);
-            HUDMSG_PLAIN | HUDMSG_COLORSTRING,
-            TACDM_HUDPRINTOFFSET, teamNames[team],
-            HUD_TEAMMONEY_X, HUD_TEAMMONEY_Y, 1.0);
+        ACS_ExecuteAlways(TACDM_CLIENT_PRINTMONEY, 0, team, cash);
 
         for (i = 0; i < 5; i++)
         {
@@ -561,68 +553,91 @@ script TACDM_HUD (void)
             reason  = teamNewCashReason[team][i];
             color   = reasonColors[reason];
 
-            if (newCash > 0)
-            {
-                incY = (i * HUD_SPACING_Y) << 16;
-                HudMessage(s:"+$", d:newCash;
-                    HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
-                    TACDM_HUDPRINTOFFSET+1+i, color,
-                    HUD_NEWMONEY_X, HUD_NEWMONEY_Y+incY, 0.1, 0.25);
-            }
-            else if (newCash < 0)
-            {
-                incY = (i * HUD_SPACING_Y) << 16;
-                HudMessage(s:"-$", d:-newCash;
-                    HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
-                    TACDM_HUDPRINTOFFSET+1+i, color,
-                    HUD_NEWMONEY_X, HUD_NEWMONEY_Y+incY, 0.1, 0.25);
-            }
+            ACS_ExecuteAlways(TACDM_CLIENT_PRINTNEWMONEY, 0, i, newCash, color);
         }
 
-        //-----
-
-        if (GetCVar("tacdm_client_showclasses") )
+        for (i = 0; i < classCount; i++)
         {
-            SetHudSize(HUD_ASPECT2_W, HUD_ASPECT2_H, 1);
-
-            for (i = 0; i < classCount; i++)
-            {
-                cost = classCosts[i];
-
-                if (cost == 0)
-                {
-                    incX = ((i / HUD_MAX) * HUD_SPACING_X) << 16;
-                    incY = ((i % HUD_MAX) * HUD_SPACING_Y) << 16;
-                    HudMessage(s:classNames[i];
-                        HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
-                        TACDM_HUDPRINTOFFSET-39+i, "Yellow",
-                        HUD_NEWCLASS_X + incX, HUD_NEWCLASS_Y + incY, 0.1, 0.5);
-                }
-                else if (cash >= cost)
-                {
-                    incX = ((i / HUD_MAX) * HUD_SPACING_X) << 16;
-                    incY = ((i % HUD_MAX) * HUD_SPACING_Y) << 16;
-                    HudMessage(s:classNames[i];
-                        HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
-                        TACDM_HUDPRINTOFFSET-39+i, "Green",
-                        HUD_NEWCLASS_X + incX, HUD_NEWCLASS_Y + incY, 0.1, 0.5);
-                }
-                else
-                {
-                    incX = ((i / HUD_MAX) * HUD_SPACING_X) << 16;
-                    incY = ((i % HUD_MAX) * HUD_SPACING_Y) << 16;
-                    HudMessage( s:classNames[i];
-                        HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
-                        TACDM_HUDPRINTOFFSET-39+i, "Black",
-                        HUD_NEWCLASS_X + incX, HUD_NEWCLASS_Y + incY, 0.1, 0.5);
-                }
-            }
+            ACS_ExecuteAlways(TACDM_CLIENT_PRINTCLASSES, 0, i, cash, classCosts[i]);
         }
 
-        //-----
-
-        oldCash = cash;
         Delay(1);
+    }
+}
+
+script TACDM_CLIENT_PRINTMONEY (int team, int cash) clientside
+{
+    int name = teamNames[team];
+
+    SetHudSize(HUD_ASPECT1_W, HUD_ASPECT1_H, 1);
+
+    HudMessage(s:name, s:" team's Cash: \cd$", d:cash;
+        HUDMSG_PLAIN | HUDMSG_COLORSTRING,
+        TACDM_HUDPRINTOFFSET, name,
+        HUD_TEAMMONEY_X, HUD_TEAMMONEY_Y, 1.0);
+}
+
+
+script TACDM_CLIENT_PRINTNEWMONEY (int i, int value, int color) clientside
+{
+    int incX; int incY;
+    SetHudSize(HUD_ASPECT1_W, HUD_ASPECT1_H, 1);
+
+    if (value > 0)
+    {
+        incY = (i * HUD_SPACING_Y) << 16;
+        HudMessage(s:"+$", d:value;
+            HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
+            TACDM_HUDPRINTOFFSET+1+i, color,
+            HUD_NEWMONEY_X, HUD_NEWMONEY_Y+incY, 0.1, 0.25);
+    }
+    else if (value < 0)
+    {
+        incY = (i * HUD_SPACING_Y) << 16;
+        HudMessage(s:"-$", d:-value;
+            HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
+            TACDM_HUDPRINTOFFSET+1+i, color,
+            HUD_NEWMONEY_X, HUD_NEWMONEY_Y+incY, 0.1, 0.25);
+    }
+}
+
+script TACDM_CLIENT_PRINTCLASSES (int i, int cash, int cost) clientside
+{
+    if (GetCVar("tacdm_client_showclasses") == 0)
+    {
+        terminate;
+    }
+
+    int incX; int incY;
+
+    SetHudSize(HUD_ASPECT2_W, HUD_ASPECT2_H, 1);
+
+    if (cost == 0)
+    {
+        incX = ((i / HUD_MAX) * HUD_SPACING_X) << 16;
+        incY = ((i % HUD_MAX) * HUD_SPACING_Y) << 16;
+        HudMessage(s:classNames[i];
+            HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
+            TACDM_HUDPRINTOFFSET-39+i, "Yellow",
+            HUD_NEWCLASS_X + incX, HUD_NEWCLASS_Y + incY, 0.1, 0.5);
+    }
+    else if (cash >= cost)
+    {
+        incX = ((i / HUD_MAX) * HUD_SPACING_X) << 16;
+        incY = ((i % HUD_MAX) * HUD_SPACING_Y) << 16;
+        HudMessage(s:classNames[i];
+            HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
+            TACDM_HUDPRINTOFFSET-39+i, "Green",
+            HUD_NEWCLASS_X + incX, HUD_NEWCLASS_Y + incY, 0.1, 0.5);
+    }
+    else
+    {
+        incX = ((i / HUD_MAX) * HUD_SPACING_X) << 16;
+        incY = ((i % HUD_MAX) * HUD_SPACING_Y) << 16;
+        HudMessage( s:classNames[i];
+            HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
+            TACDM_HUDPRINTOFFSET-39+i, "Black",
+            HUD_NEWCLASS_X + incX, HUD_NEWCLASS_Y + incY, 0.1, 0.5);
     }
 }
 
