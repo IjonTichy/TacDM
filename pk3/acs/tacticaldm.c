@@ -108,6 +108,18 @@ function int isCooperative(void)
     return ret;
 }
 
+function int getTeam(int pln)
+{
+    int team = playerTeams[pln];
+
+    if (team == 0)
+    {
+        return 4;
+    }
+
+    return team - 1;
+}
+
 function int getClass(int pln)
 {
     return playerClassNums[pln] - 1;
@@ -135,7 +147,7 @@ function void changeTeamCash(int team, int amount)
 script TACDM_AUTO_COMMON (void)
 {
     int pln = PlayerNumber();
-    playerTeams[pln] = GetPlayerInfo(pln, PlAYERINFO_TEAM);
+    playerTeams[pln] = GetPlayerInfo(pln, PlAYERINFO_TEAM) + 1;
 
     TakeInventory("ClassSwitcherNoInvuln", 1);
 
@@ -213,7 +225,10 @@ script TACDM_AUTO_ENTER enter
         ACS_ExecuteAlways(TACDM_CHOOSECLASS, 0, 0,0,0);
     }
 
-    ACS_ExecuteAlways(TACDM_HUD, 0, 0,0,0);
+    if (!PlayerIsBot(pln))
+    {
+        ACS_ExecuteAlways(TACDM_HUD, 0, 0,0,0);
+    }
 }
 
 
@@ -231,7 +246,10 @@ script TACDM_AUTO_RESPAWN respawn
 
         if (plc == 0)   // assume TACDM_AUTO_ENTER wasn't called
         {
-            ACS_ExecuteAlways(TACDM_HUD, 0, 0,0,0);
+            if (!PlayerIsBot(pln))
+            {
+                ACS_ExecuteAlways(TACDM_HUD, 0, 0,0,0);
+            }
         }
     }
     else
@@ -250,16 +268,21 @@ script TACDM_AUTO_DEATH death
     HUDMSG_FADEOUT | HUDMSG_COLORSTRING,  TACDM_CLASSPRINTOFFSET+1, "Green", 320.4, 460.1, 1.0, 2.0);
 }
 
+
+
 script TACDM_AUTO_DISCONNECT (int pln) disconnect
 {
-    int team = playerTeams[pln];
+    int team = getTeam(pln);
 
     ACS_ExecuteAlways(TACDM_INTERNAL_CHANGEMONEY, 0, team, classCosts[playerClassNums[pln] - 1],  REASON_SOLDCLASS);
 
     playerClassNums[pln] = 0;
-    playerTeams[pln] = -1;
-
+    playerTeams[pln] = 0;
 }
+
+
+
+
 
 
 
@@ -383,7 +406,7 @@ script TACDM_CHOOSECLASS (int lastClass, int noProtect)
         }
     }
 
-    playerTeams[pln] = team;
+    playerTeams[pln] = team + 1;
     playerClassNums[pln] = classScrolled + 1;
 
     if (classScrolled + 1 != lastClass)
@@ -459,6 +482,7 @@ script TACDM_PRINTCLASSDESC (int whichClass, int flashCost, int moneyAmount) cli
         while (c < 0)
         {
             c += classCount;
+
         }
 
         while (c >= classCount)
@@ -529,38 +553,53 @@ script TACDM_SETUPCLASS (void)
 }
 
 
+
+
+
 script TACDM_HUD (void)
 {
+    int tic;
     int i;
     int pln = PlayerNumber();
-    int team;
     int newCash; int reason; int color;
 
+    int team    = getTeam(pln);
     int cash    = getTeamCash(team);
     int oldCash = getTeamCash(team);
 
 
     while (PlayerInGame(pln))
     {
-        team = playerTeams[pln];
+        team = getTeam(pln);
         cash = getTeamCash(team);
 
-        ACS_ExecuteAlways(TACDM_CLIENT_PRINTMONEY, 0, team, cash);
-
-        for (i = 0; i < 5; i++)
+        if (oldCash != cash || !(tic % HUD_UPDATERATE))
         {
-            newCash = teamNewCash[team][i];
-            reason  = teamNewCashReason[team][i];
-            color   = reasonColors[reason];
+            if (!(tic % HUD_UPDATERATE))
+            {
+                tic = 0;
+            }
 
-            ACS_ExecuteAlways(TACDM_CLIENT_PRINTNEWMONEY, 0, i, newCash, color);
+
+            ACS_ExecuteAlways(TACDM_CLIENT_PRINTMONEY, 0, team, cash);
+
+            for (i = 0; i < 5; i++)
+            {
+                newCash = teamNewCash[team][i];
+                reason  = teamNewCashReason[team][i];
+                color   = reasonColors[reason];
+
+                ACS_ExecuteAlways(TACDM_CLIENT_PRINTNEWMONEY, 0, i, newCash, color);
+            }
+
+            for (i = 0; i < classCount; i++)
+            {
+                ACS_ExecuteAlways(TACDM_CLIENT_PRINTCLASSES, 0, i, cash, classCosts[i]);
+            }
         }
 
-        for (i = 0; i < classCount; i++)
-        {
-            ACS_ExecuteAlways(TACDM_CLIENT_PRINTCLASSES, 0, i, cash, classCosts[i]);
-        }
-
+        oldCash = cash;
+        tic++;
         Delay(1);
     }
 }
@@ -568,13 +607,14 @@ script TACDM_HUD (void)
 script TACDM_CLIENT_PRINTMONEY (int team, int cash) clientside
 {
     int name = teamNames[team];
+    int rate = ((HUD_UPDATERATE << 16) / 35) + 0.5;
 
     SetHudSize(HUD_ASPECT1_W, HUD_ASPECT1_H, 1);
 
     HudMessage(s:name, s:" team's Cash: \cd$", d:cash;
         HUDMSG_PLAIN | HUDMSG_COLORSTRING,
         TACDM_HUDPRINTOFFSET, name,
-        HUD_TEAMMONEY_X, HUD_TEAMMONEY_Y, 1.0);
+        HUD_TEAMMONEY_X, HUD_TEAMMONEY_Y, rate);
 }
 
 
@@ -589,7 +629,7 @@ script TACDM_CLIENT_PRINTNEWMONEY (int i, int value, int color) clientside
         HudMessage(s:"+$", d:value;
             HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
             TACDM_HUDPRINTOFFSET+1+i, color,
-            HUD_NEWMONEY_X, HUD_NEWMONEY_Y+incY, 0.1, 0.25);
+            HUD_NEWMONEY_X, HUD_NEWMONEY_Y+incY, 2.0, 0.25);
     }
     else if (value < 0)
     {
@@ -597,7 +637,7 @@ script TACDM_CLIENT_PRINTNEWMONEY (int i, int value, int color) clientside
         HudMessage(s:"-$", d:-value;
             HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
             TACDM_HUDPRINTOFFSET+1+i, color,
-            HUD_NEWMONEY_X, HUD_NEWMONEY_Y+incY, 0.1, 0.25);
+            HUD_NEWMONEY_X, HUD_NEWMONEY_Y+incY, 2.0, 0.25);
     }
 }
 
@@ -609,7 +649,7 @@ script TACDM_CLIENT_PRINTCLASSES (int i, int cash, int cost) clientside
     }
 
     int incX; int incY;
-
+    int rate = ((HUD_UPDATERATE << 16) / 35) + 0.5;
     SetHudSize(HUD_ASPECT2_W, HUD_ASPECT2_H, 1);
 
     if (cost == 0)
@@ -618,8 +658,8 @@ script TACDM_CLIENT_PRINTCLASSES (int i, int cash, int cost) clientside
         incY = ((i % HUD_MAX) * HUD_SPACING_Y) << 16;
         HudMessage(s:classNames[i];
             HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
-            TACDM_HUDPRINTOFFSET-39+i, "Yellow",
-            HUD_NEWCLASS_X + incX, HUD_NEWCLASS_Y + incY, 0.1, 0.5);
+            TACDM_HUDPRINTOFFSET-39-i, "Yellow",
+            HUD_NEWCLASS_X + incX, HUD_NEWCLASS_Y + incY, rate, 0.5);
     }
     else if (cash >= cost)
     {
@@ -627,8 +667,8 @@ script TACDM_CLIENT_PRINTCLASSES (int i, int cash, int cost) clientside
         incY = ((i % HUD_MAX) * HUD_SPACING_Y) << 16;
         HudMessage(s:classNames[i];
             HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
-            TACDM_HUDPRINTOFFSET-39+i, "Green",
-            HUD_NEWCLASS_X + incX, HUD_NEWCLASS_Y + incY, 0.1, 0.5);
+            TACDM_HUDPRINTOFFSET-39-i, "Green",
+            HUD_NEWCLASS_X + incX, HUD_NEWCLASS_Y + incY, rate, 0.5);
     }
     else
     {
@@ -636,10 +676,13 @@ script TACDM_CLIENT_PRINTCLASSES (int i, int cash, int cost) clientside
         incY = ((i % HUD_MAX) * HUD_SPACING_Y) << 16;
         HudMessage( s:classNames[i];
             HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
-            TACDM_HUDPRINTOFFSET-39+i, "Black",
-            HUD_NEWCLASS_X + incX, HUD_NEWCLASS_Y + incY, 0.1, 0.5);
+            TACDM_HUDPRINTOFFSET-39-i, "Black",
+            HUD_NEWCLASS_X + incX, HUD_NEWCLASS_Y + incY, rate, 0.5);
     }
 }
+
+
+
 
 
 script TACDM_ADDMONEY (int team, int amount, int maxAmount)
@@ -702,12 +745,12 @@ script TACDM_PAYFORKILL (int isMonster, int amount)
 {
     int killedHP = GetActorProperty(0, APROP_SpawnHealth);  // in case monster
     int killedPln = PlayerNumber();
-    int killedTeam = playerTeams[killedPln];
+    int killedTeam = getTeam(killedPln);
 
     SetActivatorToTarget(0);
 
     int killerPln = PlayerNumber();
-    int killerTeam = playerTeams[killerPln];
+    int killerTeam = getTeam(killerPln);
 
     if (!amount)
     {
