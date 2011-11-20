@@ -39,6 +39,7 @@ actor NoSpawn
 #include "decorate/weapons/assaultrifle.txt"
 #include "decorate/weapons/scattergun.txt"
 #include "decorate/weapons/shotgun.txt"
+#include "decorate/weapons/semishotgun.txt"
 #include "decorate/weapons/autoassaultrifle.txt"
 #include "decorate/weapons/chaingun.txt"
 #include "decorate/weapons/grinder.txt"
@@ -48,8 +49,10 @@ actor NoSpawn
 #include "decorate/weapons/ssg.txt"
 #include "decorate/weapons/rocketlauncher.txt"
 
+// Slot 5
+#include "decorate/weapons/grenadelauncher.txt"
 
-// Slot 6
+// Slot 7
 #include "decorate/weapons/grenade.txt"
 
 
@@ -66,6 +69,7 @@ actor NoSpawn
 #include "decorate/cpacks/scout.txt"
 #include "decorate/cpacks/shotgunner.txt"
 #include "decorate/cpacks/rocketeer.txt"
+#include "decorate/cpacks/detman.txt"
 
 
 ////

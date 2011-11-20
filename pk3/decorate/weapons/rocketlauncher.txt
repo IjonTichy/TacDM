@@ -34,7 +34,7 @@ actor "Rocket Launcher": TacDMWeapon
         PKRL A 0 A_FireCustomMissile("TacDMRocket")
         PKRL A 1 bright A_GunFlash
         PKRL B 2 bright
-        PKRL D 12 bright
+        PKRL D 8 bright
         PKRL C 6
         PKRL B 4
         PKRL E 3

@@ -1,0 +1,57 @@
+actor DetManPack: TacDMPack
+{
+    States
+    {
+      Use:
+        TNT1 A 0 ACS_ExecuteAlways(740, 0, 1)
+
+        TNT1 A 0 A_GiveInventory("Rocket Launcher")
+        TNT1 A 0 A_GiveInventory("Grenade Launcher")
+        TNT1 A 0 A_GiveInventory("Semi-Shotgun")
+        TNT1 A 0 A_GiveInventory("9mm Pistol")
+        TNT1 A 0 A_GiveInventory("Knuckleduster")
+
+        TNT1 A 0 A_GiveInventory("PineappleGrenade", 10)
+        TNT1 A 0 A_GiveInventory("9mmBullet", 72)
+        TNT1 A 0 A_GiveInventory("Buckshot", 32)
+        TNT1 A 0 A_GiveInventory("Slug", 4)
+        TNT1 A 0 A_GiveInventory("TacDMRocketAmmo", 40)
+
+
+        TNT1 A 0 A_GiveInventory("DetManResistance")
+        stop
+    }
+}
+
+actor DetManPackBot: TacDMPack
+{
+    States
+    {
+      Use:
+        TNT1 A 0 ACS_ExecuteAlways(740, 0, 1)
+
+        TNT1 A 0 A_GiveInventory("Rocket Launcher")
+        TNT1 A 0 A_GiveInventory("Grenade Launcher")
+        TNT1 A 0 A_GiveInventory("Semi-Shotgun")
+        TNT1 A 0 A_GiveInventory("9mm~Pistol")
+        TNT1 A 0 A_GiveInventory("Knuckleduster")
+
+        TNT1 A 0 A_GiveInventory("PineappleGrenade", 10)
+        TNT1 A 0 A_GiveInventory("9mmBullet", 72)
+        TNT1 A 0 A_GiveInventory("Buckshot", 32)
+        TNT1 A 0 A_GiveInventory("Slug", 4)
+        TNT1 A 0 A_GiveInventory("TacDMRocketAmmo", 40)
+
+        TNT1 A 0 A_GiveInventory("DetManResistance")
+        stop
+    }
+}
+
+
+actor DetManResistance: PowerProtection
+{
+    Powerup.Duration 0x7FFFFFFF
+
+    DamageFactor TacDMExplosion, 0.3
+    DamageFactor TacDMMonster,   0.5
+}

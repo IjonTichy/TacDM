@@ -9,7 +9,7 @@ actor "Pineapple Grenade": TacDMWeapon
     Inventory.PickupMessage "Pineapple grenade"
     Obituary "%k flushed out %o."
 
-    Weapon.SlotNumber 6
+    Weapon.SlotNumber 7
     Weapon.PreferredSkin "T-Fist"
 
     +NOAUTOFIRE

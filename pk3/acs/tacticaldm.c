@@ -5,18 +5,18 @@
 #include "tactFunctions.h"
 #include "tactConstants.h"
 
-#define classCount 7
+#define classCount 8
 
 // I'll ignore the 80-char line thing just for this
 
-int classNames[classCount]   = {"Soldier",        "Scout",        "Shotgunner",        "Auto-Soldier",       "Chaingunner",        "Rocketeer",        "Minigunner"};
-int classImgs[classCount]    = {"SOLDIERD",       "SSGERD",       "SSGERD",            "SOLDIERD",           "SOLDIERD",           "SSGERD",           "SOLDIERD"};
-int classPacks[classCount]   = {"SoldierPack",    "ScoutPack",    "ShotgunnerPack",    "AutoSoldierPack",    "ChaingunnerPack",    "RocketeerPack",    "MinigunnerPack"};
-int botPacks[classCount]     = {"SoldierPackBot", "ScoutPackBot", "ShotgunnerPackBot", "AutoSoldierPackBot", "ChaingunnerPackBot", "RocketeerPackBot", "MinigunnerPackBot"};
-int classHealths[classCount] = {100,              85,             90,                  100,                  140,                  100,                140};
-int classSpeeds[classCount]  = {0.9,              1.1,            1.0,                 0.85,                 0.6,                  1.0,                0.6};
-int classJumpZs[classCount]  = {7.0,              8.0,            8.0,                 7.0,                  6.0,                  8.0,                6.0};
-int classCosts[classCount]   = {0,                0,              500,                 500,                  5000,                 5000,               20000};
+int classNames[classCount]   = {"Soldier",        "Scout",        "Shotgunner",        "Auto-Soldier",       "Chaingunner",        "Rocketeer",        "Minigunner",        "Det-Man"};
+int classImgs[classCount]    = {"SOLDIERD",       "SSGERD",       "SSGERD",            "SOLDIERD",           "SOLDIERD",           "SSGERD",           "SOLDIERD",          "SSGERD"};
+int classPacks[classCount]   = {"SoldierPack",    "ScoutPack",    "ShotgunnerPack",    "AutoSoldierPack",    "ChaingunnerPack",    "RocketeerPack",    "MinigunnerPack",    "DetManPack"};
+int botPacks[classCount]     = {"SoldierPackBot", "ScoutPackBot", "ShotgunnerPackBot", "AutoSoldierPackBot", "ChaingunnerPackBot", "RocketeerPackBot", "MinigunnerPackBot", "DetManPackBot"};
+int classHealths[classCount] = {100,              85,             90,                  100,                  140,                  100,                140,                 100};
+int classSpeeds[classCount]  = {0.9,              1.1,            1.0,                 0.85,                 0.6,                  1.0,                0.6,                 1.0};
+int classJumpZs[classCount]  = {7.0,              8.0,            8.0,                 7.0,                  6.0,                  8.0,                6.0,                 8.0};
+int classCosts[classCount]   = {0,                0,              500,                 500,                  5000,                 5000,               20000,               20000};
 
 
 int teamNames[5] = {"Blue", "Red", "Green", "Gold", "No"};
@@ -94,7 +94,15 @@ auto, fires three times as fast as it, and does the same damage-per-bullet. The\
 only thing is, the minigun is /big/. That thing firing will slow you down to no\n\
 end. If you're chain-firing, kiss mobility goodbye.\n\
 But hey, everything you see pretty much dies instantly. It's what you don't see...\n\
-Be very wary of explosives. The sitting duck tends to attract them.",};
+Be very wary of explosives. The sitting duck tends to attract them.",
+
+"Things. Must. \caEXPLODE.\c- That's your motto, and you stick to it. With enough\n\
+money to get armor that protects against explosions without letting bullet in,\n\
+you are a force to be reckoned with. A grenade and rocket launcher are at your\n\
+disposal, along with a shotgun that fires faster than the normal shotgun, and does\n\
+slightly more damage! Your mobility is the same as the rocketeer's, and you're\n\
+better than him in every way. Oh, and you can carry more explosives. Now the rocket\n\
+launcher's alt-fire might actually be practical...",};
 
 global int 4:teamCash[];
 global int 5:playerClassNums[];
@@ -827,5 +835,20 @@ script TACDM_LETTHEREBESWITCH (int time)
     if (!canSwitch[pln])
     {
         TakeInventory("ClassSwitcherNoInvuln", 1);
+    }
+}
+
+
+
+script TACDM_CLASSBONUSES (int choice)
+{
+    switch (choice)
+    {
+    case 1:
+        SetAmmoCapacity("TacDMRocketAmmo", 40);
+        SetAmmoCapacity("PineappleGrenade", 10);
+        GiveInventory("TacDMRocketAmmo", 40);
+        GiveInventory("PineappleGrenade", 10);
+        break;
     }
 }

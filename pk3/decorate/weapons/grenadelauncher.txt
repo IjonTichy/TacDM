@@ -1,0 +1,144 @@
+actor "Grenade Launcher": TacDMWeapon
+{
+    Weapon.Selectionorder 700
+
+    Weapon.AmmoType1 "TacDMRocketAmmo"
+    Weapon.AmmoType2 "TacDMRocketAmmo"
+    Weapon.AmmoUse1 1
+    Weapon.AmmoUse2 1
+    Weapon.AmmoGive 2
+
+    +NOAUTOFIRE
+    +NOAUTOAIM
+
+    Weapon.SlotNumber 5
+    Inventory.PickupMessage "Grenade Launcher"
+
+    States
+    {
+      Deselect:
+        GRLG A 1 A_Lower
+        Loop
+
+      Select:
+        GRLG A 1 A_Raise
+        Loop
+
+      Ready:
+        GRLG A 1 A_WeaponReady
+        Loop
+
+
+      Fire:
+        GRLG A 0 A_GunFlash
+        GRLG A 2 bright               A_FireCustomMissile("TacDMGrenade")
+        GRLG A 2 bright offset(0, 42)
+        GRLG A 2 bright offset(0, 44)
+        GRLG A 10 bright offset(0, 46)
+        GRLG A 2 bright offset(0, 44)
+        GRLG A 2 bright offset(0, 38)
+        GRLG A 2 bright offset(0, 34)
+        GRLG A 0 A_ReFire
+        Goto Ready
+
+
+      AltFire:
+        GRLG A 0 A_GunFlash
+        GRLG A 2 bright               A_FireCustomMissile("TacDMImpactGrenade")
+        GRLG A 2 bright offset(0, 42)
+        GRLG A 2 bright offset(0, 44)
+        GRLG A 14 bright offset(0, 46)
+        GRLG A 2 bright offset(0, 44)
+        GRLG A 2 bright offset(0, 38)
+        GRLG A 2 bright offset(0, 34)
+        GRLG A 0 A_ReFire
+        Goto Ready
+
+      Flash:
+        NGLF A 3 bright A_Light1
+        NGLF B 4 bright
+        NGLF C 4 bright A_Light2
+        NGLF D 4 bright A_Light2
+        Goto LightDone
+
+      Spawn:
+        GLAU A -1
+        Stop
+    }
+}
+
+actor TacDMGrenadeBase
+{
+    Radius 4
+    Height 4
+    Speed 40
+    VSpeed 6
+
+    Projectile
+
+    -NOGRAVITY
+    Gravity 0.5
+
+    +RANDOMIZE
+    +DEHEXPLOSION
+    +GRENADETRAIL
+
+    SeeSound "weapons/grenlf"
+    DeathSound "weapons/grenlx"
+
+    DamageType TacDMExplosion
+
+    Obituary "%o ate %k's pineapple."
+}
+
+actor TacDMGrenade: TacDMGrenadeBase
+{
+    BounceFactor 0.3
+
+    +HEXENBOUNCE
+    +USESTBOUNCESOUND
+
+    ReactionTime 90
+
+    States
+    {
+      Spawn:
+        SGRN A 1 A_JumpIf(ACS_ExecuteWithResult(583, momx, momy, momz) < 1, "StopSpawnStart")
+        SGRN A 0 A_Countdown
+        loop
+
+      StopSpawnStart:
+        goto StopSpawn
+
+      StopSpawn:
+        SGRN A 1 A_Stop
+        SGRN A 0 A_Countdown
+        loop
+
+      Death:
+        MISL A 0 A_Stop
+        MISL A 0 A_PlayerScream
+        MISL B 0 Bright A_NoGravity
+        MISL B 0 A_Explode(224, 224)
+        MISL B 0 A_SpawnItemEx("TacDMExplosion224")
+        stop
+    }
+}
+
+actor TacDMImpactGrenade: TacDMGrenadeBase
+{
+    States
+    {
+      Spawn:
+        SGRN A 1
+        loop
+
+      Death:
+        MISL A 0 A_Stop
+        MISL A 0 A_PlayerScream
+        MISL B 0 Bright A_NoGravity
+        MISL B 0 A_Explode(224, 224)
+        MISL B 0 A_SpawnItemEx("TacDMExplosion224")
+        stop
+    }
+}
