@@ -1,3 +1,6 @@
 Minigun interpolated sprites by <Minigunner> (not big surprise, eh?)
 
 Marine skins by Xim and Ghastly_dragon
+
+
+Synert: Gave me the idea to cut down HUD net traffic insanely by only updated when needed
