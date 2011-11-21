@@ -78,5 +78,6 @@ actor AltFired: Inventory {inventory.maxamount 1 +UNDROPPABLE}
 ////
 // Other definitions
 
+#include "decorate/hud.txt"
 #include "decorate/explosions.txt"
 #include "decorate/monsterreplace.txt"

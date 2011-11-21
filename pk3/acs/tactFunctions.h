@@ -26,3 +26,16 @@ function int middle(int x, int y, int z)
 
     return max(min(x, y), z);
 }
+
+function int round(int x)
+{
+    int frac = abs(x % 1.0);
+    int intg = (x >> 16);
+
+    if (frac < 0.5)
+    {
+        return intg;
+    }
+
+    return intg + 1;
+}

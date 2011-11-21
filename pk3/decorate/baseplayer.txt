@@ -10,6 +10,8 @@ ACTOR TacDMPlayer: PlayerPawn
     Player.CrouchSprite "PLYC"
     Player.ColorRange 112, 127
 
+    Player.StartItem "UpdateHud"
+
     States
     {
       Spawn:

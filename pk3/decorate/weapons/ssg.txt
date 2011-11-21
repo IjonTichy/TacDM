@@ -31,7 +31,7 @@ actor "Double-Barrel Shotgun": TacDMWeapon
         Loop
 
       Fire:
-        PKS2 A 0 A_JumpIfInventory("BarrelEmpty", 1, "Reload")
+        PKS2 A 0 A_JumpIfInventory("BarrelEmpty", 1, "AltFire")
         PKS2 A 0 A_FireBullets(18, 12, 30, 5, "TacDMBulletPuff")
         PKS2 A 0 A_PlaySound ("weapons/sshotf", CHAN_WEAPON)
         PKS2 A 1 bright A_GunFlash

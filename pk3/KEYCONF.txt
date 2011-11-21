@@ -1,3 +1,5 @@
 clearplayerclasses
 
 addplayerclass TacDMPlayer
+
+alias refreshhud "use UpdateHud"

@@ -14,7 +14,7 @@ int classImgs[classCount]    = {"SOLDIERD",       "SCOUTD",       "SSGERD",     
 int classPacks[classCount]   = {"SoldierPack",    "ScoutPack",    "ShotgunnerPack",    "AutoSoldierPack",    "ChaingunnerPack",    "RocketeerPack",    "MinigunnerPack",    "DetManPack"};
 int botPacks[classCount]     = {"SoldierPackBot", "ScoutPackBot", "ShotgunnerPackBot", "AutoSoldierPackBot", "ChaingunnerPackBot", "RocketeerPackBot", "MinigunnerPackBot", "DetManPackBot"};
 int classHealths[classCount] = {100,              85,             90,                  100,                  140,                  100,                140,                 100};
-int classSpeeds[classCount]  = {0.91,             1.11,           1.0,                 0.851,                0.61,                 1.0,                0.61,                1.0};
+int classSpeeds[classCount]  = {0.9,              1.1,            1.0,                 0.85,                 0.6,                  1.0,                0.6,                 1.0};
 int classJumpZs[classCount]  = {7.0,              8.0,            8.0,                 7.0,                  6.0,                  8.0,                6.0,                 8.0};
 int classCosts[classCount]   = {0,                0,              500,                 500,                  5000,                 5000,               20000,               20000};
 
@@ -35,6 +35,42 @@ int classWeapNames[classCount] =
     "Shotgun, Rocket Launcher, 4 Grenades",
     "Shotgun, Grinder, 4 Grenades",
     "Semi-Shotgun, Rocket Launcher,\nGrenade Launcher, \ca10\cj Grenades"
+};
+
+int classStrengths[classCount] =
+{
+    "Can hit reliably, is free",
+    "Frickin' fast, is free",
+    "Hits \careally\c- hard at close range",
+    "It's a good all-arounder",
+    "Kills whatever you point your chaingun at",
+    "If you can lead rockets, you're a god",
+    "Makes everything die",
+    "Like the rocketeer, but even \camore\c- versatile",
+};
+
+int classWeaknesses[classCount] =
+{
+    "Is easily blown away at close range\nNot accurate enough for long range",
+    "Is torn apart at any range other than short",
+    "Too clumsy for any range other than short",
+    "Not great at anything",
+    "Slow and easy to hit\nTakes extra damage from explosives",
+    "You can easily kill yourself\nTakes extra damage from bullets",
+    "Expensive and slow\nExplosions hit hard",
+    "Easy to kill yourself",
+};
+
+int classStrats[classCount] =
+{
+    "Peck away at a distance",
+    "Hit and run, never play fair",
+    "Get close and let loose",
+    "Pelt enemies at a distance",
+    "Keep wary, and fire liberally",
+    "Ambush your enemies before they see you",
+    "Let loose if you have any suspicion",
+    "Flush out your enemies and blow them to high heaven"
 };
 
 global int 4:teamCash[];
@@ -261,14 +297,14 @@ script TACDM_CHOOSECLASS (int lastClass, int noProtect)
         classScrolled = classCount-1;
         while (classCosts[classScrolled] > getTeamCash(team))
         {
-            classScrolled--;
-
             if (classCosts[myClass - 1] > classCosts[classScrolled])
             {
                 classScrolled = max(0, lastClass - 1);  // last ditch as soldier
                 noSelect = 1;
                 break;
             }
+
+            classScrolled--;
         }
 
         if (!noSelect)
@@ -370,13 +406,7 @@ script TACDM_PRINTCLASSDESC (int whichClass, int flashCost, int moneyAmount) cli
 
     SetFont("BIGFONT");
     HudMessage(s:classNames[whichClass]; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
-    TACDM_CLASSPRINTOFFSET, "Brick", 160.4, 12.1, 3.0, 2.0);
-
-    // ~ SetHudSize(1024, 768, 1);
-// ~
-    // ~ SetFont(classImgs[whichClass]);
-    // ~ HudMessage(s:"A"; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
-    // ~ TACDM_CLASSPRINTOFFSET-1, "Untranslated", 0.1, 0.1, 1.0, 2.0);
+    TACDM_CLASSPRINTOFFSET, "Yellow", 160.4, 12.1, 3.0, 2.0);
 
 
     SetHudSize(640, 480, 1);
@@ -388,13 +418,29 @@ script TACDM_PRINTCLASSDESC (int whichClass, int flashCost, int moneyAmount) cli
         "Brick", 140.1, 120.1, 2.0, 2.0);
 
 
-    HudMessage(s:"Speed: \cj", d:((classSpeeds[whichClass]*100)>>16), s:"%";
+    HudMessage(s:"Speed: \cj", d:round(classSpeeds[whichClass]*100), s:"%";
         HUDMSG_FADEOUT | HUDMSG_COLORSTRING, TACDM_CLASSPRINTOFFSET-21,
         "Gold", 400.1, 120.1, 2.0, 2.0);
 
     HudMessage(s:"\ciWeapons: \cj", s:classWeapNames[whichClass];
         HUDMSG_FADEOUT | HUDMSG_COLORSTRING, TACDM_CLASSPRINTOFFSET-22,
         "White", 320.4, 160.1, 2.0, 2.0);
+
+    SetHudSize(800, 600, 1);
+
+    HudMessage(s:"\cnStrengths:\n", s:classStrengths[whichClass];
+        HUDMSG_FADEOUT | HUDMSG_COLORSTRING, TACDM_CLASSPRINTOFFSET-23,
+        "White", 400.4, 280.1, 2.0, 2.0);
+
+    HudMessage(s:"\cgWeaknesses:\n", s:classWeaknesses[whichClass];
+        HUDMSG_FADEOUT | HUDMSG_COLORSTRING, TACDM_CLASSPRINTOFFSET-24,
+        "White", 400.4, 365.1, 2.0, 2.0);
+
+    HudMessage(s:"\cdStrategy: \cj", s:classStrats[whichClass];
+        HUDMSG_FADEOUT | HUDMSG_COLORSTRING, TACDM_CLASSPRINTOFFSET-25,
+        "White", 400.4, 450.1, 2.0, 2.0);
+
+    SetHudSize(640, 480, 1);
 
     SetFont("SMALLFONT");
 
@@ -403,19 +449,26 @@ script TACDM_PRINTCLASSDESC (int whichClass, int flashCost, int moneyAmount) cli
         HudMessage(s:""; HUDMSG_FADEOUT, TACDM_CLASSPRINTOFFSET-3, 0, 320.4, 75.1, 1.0, 2.0);
     }
 
-    if (flashCost == 1)
+    if (classCosts[whichClass] == 0)
+    {
+        HudMessage(s:"Cost: \ci$", d:classCosts[whichClass]; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
+        TACDM_CLASSPRINTOFFSET-2, "White", 320.4, 75.1, 1.0, 2.0);
+    }
+    else if (flashCost == 1)
     {
         HudMessage(s:"Cost: \cg$", d:classCosts[whichClass]; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
         TACDM_CLASSPRINTOFFSET-3, "White", 320.4, 75.1, 1.0, 2.0);
+    }
+    else if (moneyAmount < classCosts[whichClass])
+    {
+        HudMessage(s:"Cost: \ca$", d:classCosts[whichClass]; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
+        TACDM_CLASSPRINTOFFSET-2, "White", 320.4, 75.1, 1.0, 2.0);
     }
     else
     {
         HudMessage(s:"Cost: \cd$", d:classCosts[whichClass]; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
         TACDM_CLASSPRINTOFFSET-2, "White", 320.4, 75.1, 1.0, 2.0);
     }
-
-    // ~ HudMessage(s:classDescs[whichClass]; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
-    // ~ TACDM_CLASSPRINTOFFSET-4, "White", 320.4, 100.1, 1.0, 2.0);
 
     // yeah, these next lines run over D:
     HudMessage(s:"Press \cf", k:"+moveleft", s:"\cd or \cf", k:"+forward", s:"\cd to scroll up,",
@@ -518,6 +571,7 @@ script TACDM_HUD (void)
 {
     int tic;
     int i;
+    int c1; int c2; int c3; int c4;
     int pln = PlayerNumber();
     int newCash; int reason; int color;
 
@@ -532,7 +586,12 @@ script TACDM_HUD (void)
         team = getTeam(pln);
         cash = getTeamCash(team);
 
-        if (oldCash != cash || oldTeam != team || !(tic % HUD_UPDATERATE))
+        c1   = oldCash != cash;
+        c2   = oldTeam != team;
+        c3   = !(tic % HUD_UPDATERATE);
+        c4   = CheckInventory("HudUpdateSignal") && !(tic % 35);
+
+        if (c1 || c2 || c3 || c4)
         {
             tic = 0;
 
@@ -552,6 +611,8 @@ script TACDM_HUD (void)
             {
                 ACS_ExecuteAlways(TACDM_CLIENT_PRINTCLASSES, 0, i, cash, classCosts[i]);
             }
+
+            TakeInventory("HudUpdateSignal", 1);
         }
 
         oldTeam = team;
@@ -603,6 +664,7 @@ script TACDM_CLIENT_PRINTCLASSES (int i, int cash, int cost) clientside
 {
     if (GetCVar("tacdm_client_showclasses") == 0)
     {
+        HudMessage(s:""; HUDMSG_PLAIN, TACDM_HUDPRINTOFFSET-39-i, 0, 0, 0, 0.0, 0.0);
         terminate;
     }
 
@@ -794,11 +856,16 @@ script TACDM_CLASSBONUSES (int choice)
 {
     switch (choice)
     {
-    case 1:
-        SetAmmoCapacity("TacDMRocketAmmo", 40);
-        SetAmmoCapacity("PineappleGrenade", 10);
-        GiveInventory("TacDMRocketAmmo", 40);
-        GiveInventory("PineappleGrenade", 10);
-        break;
+        case 1:
+            SetAmmoCapacity("TacDMRocketAmmo", 40);
+            SetAmmoCapacity("PineappleGrenade", 10);
+            GiveInventory("TacDMRocketAmmo", 40);
+            GiveInventory("PineappleGrenade", 10);
+            break;
+
+        case 2:
+            SetAmmoCapacity("Buckshot", 50);
+            GiveInventory("Buckshot", 50);
+            break;
     }
 }
