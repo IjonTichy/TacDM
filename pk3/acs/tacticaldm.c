@@ -10,7 +10,7 @@
 // I'll ignore the 80-char line thing just for this
 
 int classNames[classCount]   = {"Soldier",        "Scout",        "Shotgunner",        "Auto-Soldier",       "Chaingunner",        "Rocketeer",        "Minigunner",        "Det-Man"};
-int classImgs[classCount]    = {"SOLDIERD",       "SSGERD",       "SSGERD",            "SOLDIERD",           "SOLDIERD",           "SSGERD",           "SOLDIERD",          "SSGERD"};
+int classImgs[classCount]    = {"SOLDIERD",       "SCOUTD",       "SSGERD",            "SOLDIERD",           "SOLDIERD",           "SSGERD",           "SOLDIERD",          "SSGERD"};
 int classPacks[classCount]   = {"SoldierPack",    "ScoutPack",    "ShotgunnerPack",    "AutoSoldierPack",    "ChaingunnerPack",    "RocketeerPack",    "MinigunnerPack",    "DetManPack"};
 int botPacks[classCount]     = {"SoldierPackBot", "ScoutPackBot", "ShotgunnerPackBot", "AutoSoldierPackBot", "ChaingunnerPackBot", "RocketeerPackBot", "MinigunnerPackBot", "DetManPackBot"};
 int classHealths[classCount] = {100,              85,             90,                  100,                  140,                  100,                140,                 100};
