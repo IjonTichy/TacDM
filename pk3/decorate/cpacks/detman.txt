@@ -7,6 +7,7 @@ actor DetManPack: TacDMPack
 
         TNT1 A 0 A_GiveInventory("Rocket Launcher")
         TNT1 A 0 A_GiveInventory("Grenade Launcher")
+        TNT1 A 0 A_GiveInventory("Pineapple Grenade")
         TNT1 A 0 A_GiveInventory("Semi-Shotgun")
         TNT1 A 0 A_GiveInventory("9mm Pistol")
         TNT1 A 0 A_GiveInventory("Knuckleduster")
@@ -32,6 +33,7 @@ actor DetManPackBot: TacDMPack
 
         TNT1 A 0 A_GiveInventory("Rocket Launcher")
         TNT1 A 0 A_GiveInventory("Grenade Launcher")
+        TNT1 A 0 A_GiveInventory("Pineapple Grenade")
         TNT1 A 0 A_GiveInventory("Semi-Shotgun")
         TNT1 A 0 A_GiveInventory("9mm~Pistol")
         TNT1 A 0 A_GiveInventory("Knuckleduster")

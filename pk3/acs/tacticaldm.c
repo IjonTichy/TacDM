@@ -14,7 +14,7 @@ int classImgs[classCount]    = {"SOLDIERD",       "SCOUTD",       "SSGERD",     
 int classPacks[classCount]   = {"SoldierPack",    "ScoutPack",    "ShotgunnerPack",    "AutoSoldierPack",    "ChaingunnerPack",    "RocketeerPack",    "MinigunnerPack",    "DetManPack"};
 int botPacks[classCount]     = {"SoldierPackBot", "ScoutPackBot", "ShotgunnerPackBot", "AutoSoldierPackBot", "ChaingunnerPackBot", "RocketeerPackBot", "MinigunnerPackBot", "DetManPackBot"};
 int classHealths[classCount] = {100,              85,             90,                  100,                  140,                  100,                140,                 100};
-int classSpeeds[classCount]  = {0.9,              1.1,            1.0,                 0.85,                 0.6,                  1.0,                0.6,                 1.0};
+int classSpeeds[classCount]  = {0.91,             1.11,           1.0,                 0.851,                0.61,                 1.0,                0.61,                1.0};
 int classJumpZs[classCount]  = {7.0,              8.0,            8.0,                 7.0,                  6.0,                  8.0,                6.0,                 8.0};
 int classCosts[classCount]   = {0,                0,              500,                 500,                  5000,                 5000,               20000,               20000};
 
@@ -25,80 +25,17 @@ int canSwitch[32];
 int teamNewCash[5][5];
 int teamNewCashReason[5][5];
 
-int classDescs[classCount]   = {
-"Well, at least this is free. Being the grunt of the army, you don't really get\n\
-much in the way of benefits. You get an assault rifle, a pistol, some grenades,\n\
-and that's it. You can't even take buildings down, for christ's sake! No one\n\
-would really want to be this guy when the war starts raging, but at the\n\
-beginning, you have to take a bullet for the team. Or multiple. You might not\n\
-be the only one doing this either..\n\
-\n\
-At least it kills infantry well enough. Even that's a bit lacking, though.",
-
-"Pestering is your job, and for you, your life. All you do is run around, taking\n\
-potshots at your enemies before they can react. You run /really/ light, not even\n\
-holding any grenades on you by default - only a pistol and shotgun for you!\n\
-Luckily, this means you can run faster than most of the people you'll be fighting - \n\
-the people who can run faster than you are also the sort of people who have wide-\n\
-angle laser beams for fingers, and you really shouldn't fight them, unless you\n\
-have a fetish for \caDYING ALL THE TIME\c-.",
-
-"You just came straight from a deathmatch, didn't you. Well, you'll feel right\n\
-at home with this guy - he has both shotguns and you probably won't be running\n\
-out of ammo any time soon. However, he's a glass cannon, with only 90 health.\n\
-His primary weapon, the SSG, also can't fire long-range worth crap. If your target\n\
-is far away, it's probably just a good idea to hide - they most likely CAN hit you\n\
-from long range.\n\
-However, after a while, you may have the deepest and healthiest respect for your\n\
-shotgun out of every object in the universe. Don't go crazy, though.",
-
-"Other than the fact that you have an automatic assault rifle, this guy isn't\n\
-really different from a soldier at all. It's a good enough reason, though. While\n\
-primary fire isn't anywhere near as accurate as the normal assault rifle, you\n\
-have to remember - \caIT'S AUTOMATIC.\c- Since medium range will still have most\n\
-of your bullets hit, you'll still take down targets faster than the normal soldier.\n\
-Considering the game you're playing doesn't really have long-range... yeah. If you\n\
-do need accuracy, the burst fire on this thing is more accurate than on the soldier.\n\
-\n\
-In case you haven't guessed, you're the all-arounder. Just take it easy.",
-
-"Hey, chaingun! The hell with respect! You are made of solid meat, and have a\n\
-hefty 140 HP to stay up, although your running capabilities are kinda... bad.\n\
-You won't need to do much running, though, since you have a heavy chaingun that\n\
-can RIP AND TEAR through your enemies pretty effortlessly. Accuracy is only a\n\
-problem at long ranges. Shame about the cost, though.\n\
-Oh, and you take explosions harder. That grenade bouncing around the corner?",
-
-"Why settle with killing them? Coming straight from the realm of Quake, you\n\
-have a rocket launcher and you're not afraid to use it. Unfortunately, you lost\n\
-your lightning gun somewhere, and found a pistol on the road. You had the\n\
-foresight to at least bring a shotgun with you, as backup.\n\
-Now you're in this weird land, where there's chainguns that mince people up in\n\
-less than a second, and super shotguns that take more than about a second to \n\
-fire. But your rocket launcher is more powerful, and damages you less!\n\
-\n\
-Yeah, they're pretty much screwed.\n\
-One thing though. Bullets... kinda hurt a helluvalot more. 50% more. Beware\n\
-of chainguns.",
-
-"Hey, minigun! The hell with chainguns! You might as well be a chaingunner,\n\
-except that you have a minigun and shotgun, instead of a chaingun. Is that\n\
-worth a $2000 price increase?\n\
-\cgHELL YEAH IT IS.\c-\n\
-The minigun, at the very least, fires 50% faster than the chaingun, and at full\n\
-auto, fires three times as fast as it, and does the same damage-per-bullet. The\n\
-only thing is, the minigun is /big/. That thing firing will slow you down to no\n\
-end. If you're chain-firing, kiss mobility goodbye.\n\
-But hey, everything you see pretty much dies instantly. It's what you don't see...\n\
-Be very wary of explosives. The sitting duck tends to attract them.",
-
-"Things. Must. \caEXPLODE.\c- That's your motto, and you stick to it. With enough\n\
-money to get armor that protects against explosions without letting bullet in,\n\
-you are a force to be reckoned with. A grenade and rocket launcher are at your\n\
-disposal, along with a shotgun that fires faster than the normal shotgun, and does\n\
-slightly more damage! Your mobility is the same as the rocketeer's, and you're\n\
-better than him in every way. Oh, and you can carry more explosives. Now the rocket\n\
-launcher's alt-fire might actually be practical...",};
+int classWeapNames[classCount] =
+{
+    "Assault Rifle, 4 Grenades",
+    "Scattergun",
+    "Shotgun, SSG, 2 Grenades",
+    "Automatic Assault Rifle, 4 Grenades",
+    "Heavy Chaingun, 4 Grenades",
+    "Shotgun, Rocket Launcher, 4 Grenades",
+    "Shotgun, Grinder, 4 Grenades",
+    "Semi-Shotgun, Rocket Launcher,\nGrenade Launcher, \ca10\cj Grenades"
+};
 
 global int 4:teamCash[];
 global int 5:playerClassNums[];
@@ -435,14 +372,29 @@ script TACDM_PRINTCLASSDESC (int whichClass, int flashCost, int moneyAmount) cli
     HudMessage(s:classNames[whichClass]; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
     TACDM_CLASSPRINTOFFSET, "Brick", 160.4, 12.1, 3.0, 2.0);
 
-    SetHudSize(1024, 768, 1);
-
-    SetFont(classImgs[whichClass]);
-    HudMessage(s:"A"; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
-    TACDM_CLASSPRINTOFFSET-1, "Untranslated", 0.1, 0.1, 1.0, 2.0);
+    // ~ SetHudSize(1024, 768, 1);
+// ~
+    // ~ SetFont(classImgs[whichClass]);
+    // ~ HudMessage(s:"A"; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
+    // ~ TACDM_CLASSPRINTOFFSET-1, "Untranslated", 0.1, 0.1, 1.0, 2.0);
 
 
     SetHudSize(640, 480, 1);
+
+    SetFont("BIGFONT");
+
+    HudMessage(s:"HP: \cj", d:classHealths[whichClass];
+        HUDMSG_FADEOUT | HUDMSG_COLORSTRING, TACDM_CLASSPRINTOFFSET-20,
+        "Brick", 140.1, 120.1, 2.0, 2.0);
+
+
+    HudMessage(s:"Speed: \cj", d:((classSpeeds[whichClass]*100)>>16), s:"%";
+        HUDMSG_FADEOUT | HUDMSG_COLORSTRING, TACDM_CLASSPRINTOFFSET-21,
+        "Gold", 400.1, 120.1, 2.0, 2.0);
+
+    HudMessage(s:"\ciWeapons: \cj", s:classWeapNames[whichClass];
+        HUDMSG_FADEOUT | HUDMSG_COLORSTRING, TACDM_CLASSPRINTOFFSET-22,
+        "White", 320.4, 160.1, 2.0, 2.0);
 
     SetFont("SMALLFONT");
 
@@ -462,10 +414,10 @@ script TACDM_PRINTCLASSDESC (int whichClass, int flashCost, int moneyAmount) cli
         TACDM_CLASSPRINTOFFSET-2, "White", 320.4, 75.1, 1.0, 2.0);
     }
 
-    HudMessage(s:classDescs[whichClass]; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
-    TACDM_CLASSPRINTOFFSET-4, "White", 320.4, 100.1, 1.0, 2.0);
+    // ~ HudMessage(s:classDescs[whichClass]; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
+    // ~ TACDM_CLASSPRINTOFFSET-4, "White", 320.4, 100.1, 1.0, 2.0);
 
-    SetFont("SMALLFONT"); // yeah, these next lines run over D:
+    // yeah, these next lines run over D:
     HudMessage(s:"Press \cf", k:"+moveleft", s:"\cd or \cf", k:"+forward", s:"\cd to scroll up,",
                s:" \cf", k:"+moveright", s:"\cd, \cf", k:"+back", s:"\cd, or \cf", k:"+altattack", s:"\cd to scroll down,",
                s:" and \cf", k:"+attack", s:"\cd or \cf", k:"+use", s:"\cd to select";
@@ -493,10 +445,15 @@ script TACDM_PRINTCLASSDESC (int whichClass, int flashCost, int moneyAmount) cli
                 HudMessage(s:classNames[c]; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
                 TACDM_CLASSPRINTOFFSET-5-i, "Gold", 60.4, 20.1+((i*TACDM_NAMESPACING) << 16), 1.0, 0.5);
             }
+            else if (classCosts[c] == 0)
+            {
+                HudMessage(s:classNames[c]; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
+                TACDM_CLASSPRINTOFFSET-5-i, "Yellow", 60.4, 20.1+((i*TACDM_NAMESPACING) << 16), 1.0, 0.5);
+            }
             else if (classCosts[c] > moneyAmount)
             {
                 HudMessage(s:classNames[c]; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
-                TACDM_CLASSPRINTOFFSET-5-i, "Red", 60.4, 20.1+((i*TACDM_NAMESPACING) << 16), 1.0, 0.5);
+                TACDM_CLASSPRINTOFFSET-5-i, "Dark Grey", 60.4, 20.1+((i*TACDM_NAMESPACING) << 16), 1.0, 0.5);
             }
             else
             {
@@ -511,10 +468,15 @@ script TACDM_PRINTCLASSDESC (int whichClass, int flashCost, int moneyAmount) cli
                 HudMessage(s:classNames[c]; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
                 TACDM_CLASSPRINTOFFSET-5-i, "Yellow", 60.4, 20.1+((i*TACDM_NAMESPACING) << 16), 1.0, 0.5);
             }
+            else if (classCosts[c] == 0)
+            {
+                HudMessage(s:classNames[c]; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
+                TACDM_CLASSPRINTOFFSET-5-i, "Orange", 60.4, 20.1+((i*TACDM_NAMESPACING) << 16), 1.0, 0.5);
+            }
             else if (classCosts[c] > moneyAmount)
             {
                 HudMessage(s:classNames[c]; HUDMSG_FADEOUT | HUDMSG_COLORSTRING,
-                TACDM_CLASSPRINTOFFSET-5-i, "Dark Red", 60.4, 20.1+((i*TACDM_NAMESPACING) << 16), 1.0, 0.5);
+                TACDM_CLASSPRINTOFFSET-5-i, "Black", 60.4, 20.1+((i*TACDM_NAMESPACING) << 16), 1.0, 0.5);
             }
             else
             {
