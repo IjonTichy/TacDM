@@ -45,26 +45,22 @@ have a fetish for \caDYING ALL THE TIME\c-.",
 
 "You just came straight from a deathmatch, didn't you. Well, you'll feel right\n\
 at home with this guy - he has both shotguns and you probably won't be running\n\
-out of ammo any time soon. However, he's a glass cannon, with only 90 health.\n\n\
-As for those buildings, who cares about them? Most certainly not you - you just\n\
-want to kill everything! As a result, you have no C4's on you, meaning you can't\n\
-effectively take down a building - unless you think shooting at it with your\n\
-shotguns will do much damage. In which case, have fun.\n\
+out of ammo any time soon. However, he's a glass cannon, with only 90 health.\n\
+His primary weapon, the SSG, also can't fire long-range worth crap. If your target\n\
+is far away, it's probably just a good idea to hide - they most likely CAN hit you\n\
+from long range.\n\
 However, after a while, you may have the deepest and healthiest respect for your\n\
 shotgun out of every object in the universe. Don't go crazy, though.",
 
-"So, what's the difference between this guy and the normal soldier? Well,\n\
-besides the fact that he has an automatic assault rifle, and that you go a bit\n\
-slower, not much at all.\n\
-Now, you'd think an automatic assault rifle would be better, right? Well...\n\
-sorta, depending on who you want to believe. Obviously, it's automatic, but as\n\
-a result, its accuracy is much worse compared to its semi-auto brethren. You\n\
-can hold more ammo for it, but it doesn't pack as much as a punch as the\n\
-other's rounds. You do fire faster, though, but is it really enough to\n\
-compensate for it?\n\
-Yes, probably, but hey. At the very least, it's a ton easier to take out those\n\
-pesky scouts, shotgunners, and rocketeers. After all, your aim isn't jostled by\n\
-pulling the trigger...",
+"Other than the fact that you have an automatic assault rifle, this guy isn't\n\
+really different from a soldier at all. It's a good enough reason, though. While\n\
+primary fire isn't anywhere near as accurate as the normal assault rifle, you\n\
+have to remember - \caIT'S AUTOMATIC.\c- Since medium range will still have most\n\
+of your bullets hit, you'll still take down targets faster than the normal soldier.\n\
+Considering the game you're playing doesn't really have long-range... yeah. If you\n\
+do need accuracy, the burst fire on this thing is more accurate than on the soldier.\n\
+\n\
+In case you haven't guessed, you're the all-arounder. Just take it easy.",
 
 "Hey, chaingun! The hell with respect! You are made of solid meat, and have a\n\
 hefty 140 HP to stay up, although your running capabilities are kinda... bad.\n\
@@ -155,6 +151,7 @@ function void changeTeamCash(int team, int amount)
 script TACDM_AUTO_COMMON (void)
 {
     int pln = PlayerNumber();
+    int plc = playerClassNums[pln];
     playerTeams[pln] = GetPlayerInfo(pln, PlAYERINFO_TEAM) + 1;
 
     TakeInventory("ClassSwitcherNoInvuln", 1);
@@ -162,6 +159,10 @@ script TACDM_AUTO_COMMON (void)
     if (PlayerIsBot(pln))
     {
         GiveInventory("IsBot", 1);
+    }
+    else if (plc == 0)   // assume TACDM_AUTO_ENTER wasn't called
+    {
+        ACS_ExecuteAlways(TACDM_HUD, 0, 0,0,0);
     }
 }
 
@@ -232,11 +233,6 @@ script TACDM_AUTO_ENTER enter
     {
         ACS_ExecuteAlways(TACDM_CHOOSECLASS, 0, 0,0,0);
     }
-
-    if (!PlayerIsBot(pln))
-    {
-        ACS_ExecuteAlways(TACDM_HUD, 0, 0,0,0);
-    }
 }
 
 
@@ -251,14 +247,6 @@ script TACDM_AUTO_RESPAWN respawn
     if ((bDown & BT_ALTATTACK) || (plc == 0) || (PlayerIsBot(pln) && random(GetCVar("skill"), 4) == 4))
     {
         ACS_ExecuteAlways(TACDM_CHOOSECLASS,  0, plc,0,0);
-
-        if (plc == 0)   // assume TACDM_AUTO_ENTER wasn't called
-        {
-            if (!PlayerIsBot(pln))
-            {
-                ACS_ExecuteAlways(TACDM_HUD, 0, 0,0,0);
-            }
-        }
     }
     else
     {
@@ -572,8 +560,9 @@ script TACDM_HUD (void)
     int newCash; int reason; int color;
 
     int team    = getTeam(pln);
+    int oldTeam = team;
     int cash    = getTeamCash(team);
-    int oldCash = getTeamCash(team);
+    int oldCash = cash;
 
 
     while (PlayerInGame(pln))
@@ -581,12 +570,9 @@ script TACDM_HUD (void)
         team = getTeam(pln);
         cash = getTeamCash(team);
 
-        if (oldCash != cash || !(tic % HUD_UPDATERATE))
+        if (oldCash != cash || oldTeam != team || !(tic % HUD_UPDATERATE))
         {
-            if (!(tic % HUD_UPDATERATE))
-            {
-                tic = 0;
-            }
+            tic = 0;
 
 
             ACS_ExecuteAlways(TACDM_CLIENT_PRINTMONEY, 0, team, cash);
@@ -606,8 +592,10 @@ script TACDM_HUD (void)
             }
         }
 
+        oldTeam = team;
         oldCash = cash;
         tic++;
+
         Delay(1);
     }
 }

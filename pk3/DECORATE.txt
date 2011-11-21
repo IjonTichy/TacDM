@@ -11,6 +11,9 @@ actor NoSpawn
     }
 }
 
+actor MainFired: Inventory {inventory.maxamount 1 +UNDROPPABLE}
+actor AltFired: Inventory {inventory.maxamount 1 +UNDROPPABLE}
+
 ////
 // Player definitions
 

@@ -144,7 +144,6 @@ actor ThrownGrenade
         HGRN ABCDEFABCDEFABCDEF 4
         Goto Death
       Death:
-        HGRN G 0 A_PlaySound("weapons/rocklx")
         HGRN G 0 A_Explode(224, 224)
         HGRN G 0 A_SpawnItemEx("TacDMExplosion224")
         stop

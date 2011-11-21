@@ -10,4 +10,3 @@ actor NoPlasmaRifle:        NoSpawn replaces PlasmaRifle {}
 actor NoRailgun:            NoSpawn replaces Railgun {}
 actor NoBFG9000:            NoSpawn replaces BFG9000 {}
 actor NoBFG10K:             NoSpawn replaces BFG10K {}
-actor NoBackpack:           NoSpawn replaces Backpack {}

@@ -8,7 +8,7 @@ actor TacDMExplosion
     {
       Spawn:
         MISL B 0  bright
-        MISL B 0  bright A_PlaySound("weapons/rocklx")
+        MISL B 0  bright A_PlaySound("weapons/grenlx")
         MISL B 12 bright
         MISL C 10 bright
         MISL D 8  bright
@@ -29,7 +29,7 @@ actor TacDMExplosion96: TacDMExplosion
     {
       Spawn:
         MISL B 0  bright
-        MISL B 0  bright A_PlaySound("weapons/rocklx", CHAN_BODY, 0.4)
+        MISL B 0  bright A_PlaySound("weapons/grenlx", CHAN_BODY, 0.4)
         MISL B 12 bright
         MISL C 10 bright
         MISL D 8  bright
